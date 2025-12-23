@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Martin Dimoski • Website in Development</title>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(1200px 600px at top, #020617, var(--bg));
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      max-width: 520px;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    p {
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+      margin: 24px 0;
+    }
+
+    .status {
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .mk {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Martin <span class="accent">Dimoski</span></h1>
+
+    <p>
+      Automation, AI, and systems-focused solutions for individuals and businesses.
+    </p>
+
+    <div class="divider"></div>
+
+    <p class="status">
+      This website is currently in development.
+    </p>
+    <p class="mk">
+      Страната моментално се изработува
+    </p>
+
+    <footer>
+      martindimoski.dev
+    </footer>
+  </div>
+</body>
+</html>
