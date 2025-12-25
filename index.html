@@ -1,107 +1,228 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="mk">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDQ6HV2G9B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZDQ6HV2G9B');
+</script>
+<html lang="mk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Martin Dimoski • Website in Development</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #38bdf8;
-    }
+    <title>Мартин Димоски – Практични бизнис и технички решенија</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <meta name="description" content="
+Практични консултации, автоматизација и техничка помош.
+Фокус на јасни решенија, подобри процеси и помалку хаос.
+">
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(1200px 600px at top, #020617, var(--bg));
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .card {
-      max-width: 520px;
-      width: 100%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
-    }
-
-    .accent {
-      color: var(--accent);
-    }
-
-    p {
-      line-height: 1.6;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-      margin: 24px 0;
-    }
-
-    .status {
-      font-size: 1.1rem;
-      color: var(--text);
-    }
-
-    .mk {
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    footer {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.35);
-      text-align: right;
-    }
-  </style>
+    <link rel="stylesheet" href="../styles/main.css">
 </head>
-
 <body>
-  <div class="card">
-    <h1>Martin <span class="accent">Dimoski</span></h1>
 
-    <p>
-      Automation, AI, and systems-focused solutions for individuals and businesses.
-    </p>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">MD</a>
+            <ul class="nav-links">
+                <li><a href="#пристап">Пристап</a></li>
+                <li><a href="#услуги">Што решавам</a></li>
+                <li><a href="#за-кого">За кого е</a></li>
+                <li><a href="#контакт">Контакт</a></li>
+            </ul>
+            <a href="../en/index.html" class="lang-switch">EN</a>
+        </div>
+    </nav>
 
-    <div class="divider"></div>
+    <main>
 
-    <p class="status">
-      This website is currently in development.
-    </p>
-    <p class="mk">
-      Страната моментално се изработува
-    </p>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <p class="hero-label">
+                        ПРАКТИЧНИ РЕШЕНИЈА ЗА РЕАЛНИ ПРОБЛЕМИ
+                    </p>
 
-    <footer>
-      martindimoski.dev
+                    <h1 class="hero-title">
+                        Ако нешто не функционира –
+                        <span class="highlight">го средуваме</span>.
+                    </h1>
+
+                    <p class="hero-description">
+                        Работам со поединци и бизниси кога работите стануваат
+                        покомплицирани отколку што треба да бидат.
+                    </p>
+
+                    <a href="#контакт" class="cta-button">
+                        Ајде да разговараме →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- APPROACH -->
+        <section id="пристап" class="section bg-secondary">
+            <div class="container">
+                <h2 class="section-title">Како пристапувам</h2>
+
+                <p class="section-description">
+                    Доаѓам од автоматизација, вештачка интелигенција,
+                    маркетинг, продажба и работа со различни
+                    информациски системи.
+                </p>
+
+                <p class="section-description">
+                    Но фокусот никогаш не е самата технологија,
+                    туку начинот на кој работите реално се одвиваат
+                    и каде се губи време, пари или фокус.
+                </p>
+
+                <p class="section-description">
+                    Понекогаш тоа значи мали подобрувања.
+                    Понекогаш значи целосно редизајнирање
+                    на начинот на работа.
+                </p>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="услуги" class="section">
+            <div class="container">
+                <h2 class="section-title">Какви проблеми решавам</h2>
+
+                <div class="grid">
+
+                    <div class="card">
+                        <h3>Кога работата е покомплицирана отколку што треба</h3>
+                        <p>
+                            Анализа и поедноставување на процеси,
+                            алатки и начинот на кој се носат одлуки.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Кога се губи време на повторливи задачи</h3>
+                        <p>
+                            Автоматизација и паметни решенија
+                            што ја намалуваат рачната работа
+                            и непотребниот хаос.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Кога техниката станува проблем</h3>
+                        <p>
+                            Практична техничка помош, инсталирање
+                            и подесување на системи што едноставно
+                            треба да си ја вршат работата.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Кога податоците се „заробени“</h3>
+                        <p>
+                            Вадење на информации од стари или
+                            нефункционални компјутери и дискови
+                            кога тоа е можно.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Кога не сте сигурни што да купите</h3>
+                        <p>
+                            Објективен совет при избор на компјутер
+                            или опрема, според реалните потреби,
+                            не според реклами.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Кога сакате второ мислење</h3>
+                        <p>
+                            Консултантски пристап кога треба
+                            јасност пред важна одлука или промена.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- AUDIENCE -->
+        <section id="за-кого" class="section bg-secondary">
+            <div class="container">
+                <h2 class="section-title">За кого е ова</h2>
+
+                <div class="audience-list">
+
+                    <div class="audience-item">
+                        <h3>За луѓе што сакаат јасност</h3>
+                        <p>
+                            Директни одговори и решенија,
+                            без непотребно комплицирање.
+                        </p>
+                    </div>
+
+                    <div class="audience-item">
+                        <h3>За бизниси во раст</h3>
+                        <p>
+                            Кога постоечкиот начин на работа
+                            веќе не ги следи потребите.
+                        </p>
+                    </div>
+
+                    <div class="audience-item">
+                        <h3>Не е за секого</h3>
+                        <p>
+                            Ако барате најевтино и најбрзо,
+                            без да се реши коренот на проблемот –
+                            ова не е тоа.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="контакт" class="section">
+            <div class="container">
+                <div class="contact-content">
+                    <h2 class="section-title">Ајде да разговараме</h2>
+
+                    <p class="contact-description">
+                        Цената се договара индивидуално и зависи
+                        од комплексноста на задачата и времето
+                        потребно за да се изработи решение
+                        што навистина функционира.
+                    </p>
+
+                    <a href="mailto:hello@example.com" class="contact-button">
+                        Контактирајте ме
+                    </a>
+
+                    <p class="contact-note">
+                        Одговор во рок од 24–48 часа
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>
+                &copy; 2025 Мартин Димоски. Сите права задржани.
+            </p>
+        </div>
     </footer>
-  </div>
+
+    <script src="../js/main.js"></script>
 </body>
 </html>
