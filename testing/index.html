@@ -1,69 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Loaders</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loader Test</title>
 
-  <!-- Global styles (optional) -->
-  <link rel="stylesheet" href="/styles/main.css">
-
-  <!-- Page-specific styles -->
-  <link rel="stylesheet" href="./style.css">
+  <!-- Only this CSS -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
-  <main class="loader-page">
+  <div class="wheel-and-hamster" role="img" aria-label="Hamster running in a wheel">
+    <div class="wheel"></div>
 
-    <!-- Hamster Loader -->
-    <section class="loader-section">
-      <h2>Hamster Loader</h2>
-
-      <!-- From Uiverse.io by Nawsome -->
-      <div
-        class="wheel-and-hamster"
-        role="img"
-        aria-label="Orange and tan hamster running in a metal wheel"
-      >
-        <div class="wheel"></div>
-
-        <div class="hamster">
-          <div class="hamster__body">
-            <div class="hamster__head">
-              <div class="hamster__ear"></div>
-              <div class="hamster__eye"></div>
-              <div class="hamster__nose"></div>
-            </div>
-
-            <div class="hamster__limb hamster__limb--fr"></div>
-            <div class="hamster__limb hamster__limb--fl"></div>
-            <div class="hamster__limb hamster__limb--br"></div>
-            <div class="hamster__limb hamster__limb--bl"></div>
-            <div class="hamster__tail"></div>
-          </div>
+    <div class="hamster">
+      <div class="hamster__body">
+        <div class="hamster__head">
+          <div class="hamster__ear"></div>
+          <div class="hamster__eye"></div>
+          <div class="hamster__nose"></div>
         </div>
 
-        <div class="spoke"></div>
+        <div class="hamster__limb hamster__limb--fr"></div>
+        <div class="hamster__limb hamster__limb--fl"></div>
+        <div class="hamster__limb hamster__limb--br"></div>
+        <div class="hamster__limb hamster__limb--bl"></div>
+        <div class="hamster__tail"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- Square Loader -->
-    <section class="loader-section">
-      <h2>Square Loader</h2>
-
-      <!-- From Uiverse.io by ZacharyCrespin -->
-      <div class="loader">
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-        <div class="loader-square"></div>
-      </div>
-    </section>
-
-  </main>
+    <div class="spoke"></div>
+  </div>
 
 </body>
 </html>
