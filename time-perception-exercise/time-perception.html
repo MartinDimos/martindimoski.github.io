@@ -182,14 +182,41 @@
       document.getElementById("errorResult").innerText =
         `Error: ${error > 0 ? "+" : ""}${error.toFixed(2)} seconds`;
 
-      let bias;
-      if (elapsed < 26) {
-        bias = "You overestimated time. This often correlates with impatience or heightened alertness.";
-      } else if (elapsed > 34) {
-        bias = "You underestimated time. This often correlates with deep focus or reduced time awareness.";
-      } else {
-        bias = "Your time perception is surprisingly accurate.";
-      }
+    let bias = "";
+    let isPerfect = false;
+
+    if (elapsed < 18) {
+      bias = "Extreme overestimation. Time felt much longer than it was. This often appears under stress, anxiety, or strong anticipation.";
+    } else if (elapsed < 20) {
+      bias = "Strong overestimation. You likely rushed the stop, suggesting impatience or elevated arousal.";
+    } else if (elapsed < 22) {
+      bias = "Clear overestimation. Your internal clock is running faster than real time.";
+    } else if (elapsed < 24) {
+      bias = "Moderate overestimation. Attention may be split or externally oriented.";
+    } else if (elapsed < 26) {
+      bias = "Slight overestimation. You were alert but not fully immersed.";
+    } else if (elapsed < 28) {
+      bias = "Near-accurate, leaning fast. You have good time awareness with mild urgency bias.";
+    } else if (elapsed < 29) {
+      bias = "Very close. Your perception is well calibrated, with a small tendency to rush.";
+    } else if (elapsed <= 31) {
+      bias = "Spot on. Your internal sense of time is highly accurate.";
+      isPerfect = true;
+    } else if (elapsed <= 32) {
+      bias = "Very close. Strong temporal awareness with minimal drift.";
+    } else if (elapsed <= 34) {
+      bias = "Near-accurate, leaning slow. Likely mild immersion or relaxed focus.";
+    } else if (elapsed <= 36) {
+      bias = "Slight underestimation. Time felt shorter, often linked to engagement.";
+    } else if (elapsed <= 38) {
+      bias = "Moderate underestimation. You were likely absorbed in the moment.";
+    } else if (elapsed <= 40) {
+      bias = "Clear underestimation. Deep focus or reduced time monitoring.";
+    } else if (elapsed <= 42) {
+      bias = "Strong underestimation. You likely lost track of time completely.";
+    } else {
+      bias = "Extreme underestimation. Time compression is strong, commonly seen in flow states.";
+    }
 
       document.getElementById("biasResult").innerText = bias;
 
@@ -210,6 +237,8 @@
       localStorage.setItem("time-perception-data", JSON.stringify(data));
     }
   </script>
-
+<div id="congrats" class="congrats hidden">
+  🎯 Excellent time perception!
+</div>
 </body>
 </html>
