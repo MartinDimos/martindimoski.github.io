@@ -348,22 +348,35 @@ async function spin(){
                 matchCount++;
             } else break;
         }
-        if(matchCount>=3){
-            winningLines.push(line);
-            const lineScore = lineSymbols[0].score * matchCount;
-            totalWin += lineScore;
-            // Highlight winning symbols in grid
-            for(let i=0;i<matchCount;i++){
-                grid[line[i]].classList.add('win');
-            }
-            // Highlight corresponding payline in Pay Table
-            paylineBoxes[idx].classList.add('win');
-            // Highlight matching symbol in Pay Table
-            document.querySelectorAll('.symbol-cell').forEach(s=>{
-                if(s.textContent===firstSym) s.classList.add('win');
-            });
-        }
+        if (matchCount >= 3) {
+    winningLines.push(line);
+
+    // 1. Sum symbol values
+    const symbolSum = lineSymbols
+        .slice(0, matchCount)
+        .reduce((sum, s) => sum + s.score, 0);
+
+    // 2. Multiplier logic
+    let multiplier = 1;
+    if (matchCount === 4) multiplier = 2;
+    if (matchCount === 5) multiplier = 5;
+
+    const lineWin = symbolSum * multiplier;
+    totalWin += lineWin;
+
+    // Highlight winning symbols in grid
+    for (let i = 0; i < matchCount; i++) {
+        grid[line[i]].classList.add('win');
+    }
+
+    // Highlight corresponding payline in Pay Table
+    paylineBoxes[idx].classList.add('win');
+
+    // Highlight only the winning symbol in Pay Table
+    document.querySelectorAll('.symbol-cell').forEach(s => {
+        if (s.textContent === firstSym) s.classList.add('win');
     });
+}
 
     if(totalWin>0){
         await animateBalance(balance, balance + totalWin);
