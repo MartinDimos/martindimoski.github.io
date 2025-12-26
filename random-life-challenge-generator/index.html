@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Life Challenge</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f8ff;
+    padding: 3rem;
+    color: #111827;
+  }
+
+  h1 {
+    color: #1e40af;
+  }
+
+  #daily-challenge {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #e0e7ff;
+    border-radius: 12px;
+    display: inline-block;
+    max-width: 600px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+  }
+
+  #daily-challenge.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #streak {
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+
+  .share-buttons a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 15px;
+    background: #1e40af;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+
+  .share-buttons a:hover {
+    background: #3743a0;
+  }
+</style>
+</head>
+<body>
+  <h1>Today's Life Challenge</h1>
+  <div id="streak">Streak: 0 days</div>
+  <div id="daily-challenge">Loading...</div>
+
+  <div class="share-buttons">
+    <a id="share-facebook" href="#" target="_blank">Share on Facebook</a>
+    <a id="share-linkedin" href="#" target="_blank">Share on LinkedIn</a>
+    <a id="share-instagram" href="#" target="_blank">Share on Instagram</a>
+  </div>
+
+  <script>
+    // Array of 100 challenges
+    const challenges = [
+      "Write down three things you are grateful for today",
+      "Drink an extra glass of water",
+      "Take a 10 minute walk outside",
+      "Meditate for five minutes",
+      "Write a one sentence journal entry",
+      "Compliment someone genuinely",
+      "Read one page of a book",
+      "Stretch for five minutes",
+      "Declutter one area of your home",
+      "List your top three priorities for today",
+      "Listen to a new music genre",
+      "Make your bed in the morning",
+      "Take deep breaths for two minutes",
+      "Send a kind message to a friend",
+      "Try a new healthy snack",
+      "Smile at three people",
+      "Write down one personal goal",
+      "Stand up and move every hour",
+      "Watch a TED talk under ten minutes",
+      "Write down one thing you learned today",
+      "Take five minutes to plan your week",
+      "Eat one fruit or vegetable you usually skip",
+      "Practice a positive affirmation",
+      "Clean your workspace",
+      "Unfollow one negative social media account",
+      "Make a small donation to a cause",
+      "Try a new recipe",
+      "Listen to a podcast episode",
+      "Write down one fear and one way to face it",
+      "Take a break from screens for 30 minutes",
+      "Try a new hobby for 15 minutes",
+      "Organize your email inbox",
+      "Call a family member",
+      "Practice a breathing technique",
+      "List five things you like about yourself",
+      "Take a mindful shower",
+      "Set a timer to focus for 25 minutes",
+      "Read an inspiring quote and reflect on it",
+      "Draw or doodle for ten minutes",
+      "Say thank you to someone",
+      "Try a new route when walking or driving",
+      "Listen to nature sounds",
+      "Make a to-do list for tomorrow",
+      "Write down one habit to improve",
+      "Drink tea instead of coffee for one day",
+      "Take a short nap",
+      "Look at the sky and notice the clouds",
+      "Wash your hands thoroughly",
+      "Write a letter to your future self",
+      "Try one new exercise",
+      "Review your monthly budget",
+      "Watch a documentary",
+      "Spend five minutes reflecting on your achievements",
+      "Set a small challenge for yourself",
+      "Compliment yourself in the mirror",
+      "Take a photo of something beautiful",
+      "Clean one drawer or cabinet",
+      "Try a new fruit or vegetable",
+      "Write down one thing that made you happy today",
+      "Practice listening without interrupting",
+      "Go for a 15 minute walk without phone",
+      "Reflect on one mistake and what you learned",
+      "Plan a healthy meal for tomorrow",
+      "Write a short poem",
+      "Avoid sugar for one meal",
+      "Read an article on a new topic",
+      "Try a short yoga session",
+      "Write down three strengths you have",
+      "Send a thank you email",
+      "Spend five minutes visualizing a goal",
+      "Tidy your desk",
+      "Practice good posture for ten minutes",
+      "Look at old photos and reflect on memories",
+      "Learn one new word",
+      "Try a new style of clothing or accessory",
+      "Spend time with a pet or nature",
+      "Write down one way to reduce stress",
+      "Listen to a motivational speech",
+      "Avoid social media for one hour",
+      "Clean your phone or computer screen",
+      "Try a breathing exercise before bed",
+      "Reflect on a recent success",
+      "Write a short list of favorite songs",
+      "Make a small change to your routine",
+      "Take a 10 minute walk barefoot on grass or sand",
+      "Write down three things you want to improve",
+      "Read a chapter of a self-help book",
+      "Drink herbal tea instead of a sugary drink",
+      "Do five minutes of stretching before bed",
+      "Watch a video in a new language",
+      "Practice handwriting for five minutes",
+      "Write down three things that inspire you",
+      "Try a new cooking ingredient",
+      "Plan a fun activity for the weekend",
+      "Write a short story",
+      "Practice smiling for two minutes",
+      "Review your calendar and plan a productive day",
+      "Learn one fact about history or science",
+      "Write down one dream you want to achieve",
+      "Reflect on one way to make tomorrow better"
+    ];
+
+    // Seed based on date
+    function getDaySeed() {
+      const today = new Date();
+      return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    }
+
+    function randomFromSeed(seed, max) {
+      let x = Math.sin(seed) * 10000;
+      return Math.floor((x - Math.floor(x)) * max);
+    }
+
+    function getTodaysChallenge() {
+      const seed = getDaySeed();
+      const index = randomFromSeed(seed, challenges.length);
+      return challenges[index];
+    }
+
+    // Track streaks
+    function updateStreak() {
+      const today = new Date().toDateString();
+      const lastDate = localStorage.getItem('lastChallengeDate');
+      let streak = parseInt(localStorage.getItem('streak')) || 0;
+
+      if (lastDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (lastDate === yesterday.toDateString()) {
+          streak++;
+        } else {
+          streak = 1;
+        }
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastChallengeDate', today);
+      }
+      document.getElementById('streak').textContent = `Streak: ${streak} day${streak > 1 ? 's' : ''}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateStreak();
+
+      const challengeText = getTodaysChallenge();
+      const challengeDiv = document.getElementById('daily-challenge');
+      challengeDiv.textContent = challengeText;
+
+      // Animate
+      setTimeout(() => {
+        challengeDiv.classList.add('show');
+      }, 100);
+
+      const encodedText = encodeURIComponent(`Today's Challenge: ${challengeText}`);
+
+      document.getElementById("share-facebook").href =
+        `https://www.facebook.com/sharer/sharer.php?u=&quote=${encodedText}`;
+      document.getElementById("share-linkedin").href =
+        `https://www.linkedin.com/sharing/share-offsite/?url=&mini=true&summary=${encodedText}`;
+      document.getElementById("share-instagram").href =
+        `https://www.instagram.com/?url=&caption=${encodedText}`;
+    });
+  </script>
+</body>
+</html>
