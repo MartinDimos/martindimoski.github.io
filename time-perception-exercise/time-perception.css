@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Time Perception Experiment – App-Specific Styles
+   Author: Martin Dimoski
+   ========================================================================== */
+
+/* App container override */
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at top,
+    rgba(2, 6, 23, 1),
+    rgba(0, 0, 0, 1)
+  );
+}
+
+/* Main experiment card */
+.tp-card {
+  background: linear-gradient(
+    180deg,
+    var(--color-card-bg),
+    var(--color-primary-bg)
+  );
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  animation: tpFadeIn 0.6s ease;
+}
+
+/* Headings */
+.tp-card h1 {
+  font-size: 1.8rem;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Descriptions */
+.tp-card p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.6;
+}
+
+/* Buttons */
+.tp-button {
+  background: linear-gradient(
+    135deg,
+    #1e40af,
+    #1e3a8a
+  );
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+}
+
+.tp-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(30, 64, 175, 0.6);
+}
+
+/* Secondary button */
+.tp-button.secondary {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  box-shadow: none;
+  margin-top: var(--spacing-md);
+}
+
+/* Hidden utility */
+.tp-hidden {
+  display: none;
+}
+
+/* Result box */
+.tp-result {
+  margin-top: var(--spacing-lg);
+  background: rgba(2, 6, 23, 0.6);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+}
+
+/* Metrics */
+.tp-metric {
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Bias text */
+.tp-bias {
+  margin-top: var(--spacing-md);
+  font-style: italic;
+  color: #c7d2fe;
+}
+
+/* Congrats overlay */
+.tp-congrats {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(30, 64, 175, 0.9),
+    rgba(2, 6, 23, 0.95)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  z-index: 999;
+  animation: tpPopFade 1.2s ease forwards;
+}
+
+/* Animations */
+@keyframes tpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tpPopFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .tp-card {
+    padding: var(--spacing-xl);
+  }
+
+  .tp-card h1 {
+    font-size: 1.5rem;
+  }
+}
