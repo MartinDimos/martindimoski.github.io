@@ -6,61 +6,107 @@
 <title>Information Clarity Quiz</title>
 <style>
   body {
-    font-family: Arial, sans-serif;
-    background: #f0f4ff;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
     color: #111827;
     padding: 2rem;
+    transition: background 0.3s ease;
   }
 
   h1, h2 {
     color: #1e40af; /* Navi blue */
+    text-align: center;
+  }
+
+  p {
+    line-height: 1.5;
   }
 
   form {
+    max-width: 700px;
+    margin: 2rem auto;
+  }
+
+  .question-card {
     background: #ffffff;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     border-radius: 12px;
-    max-width: 600px;
-    margin: auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .question-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
   }
 
   label {
     display: block;
     margin: 0.5rem 0;
     cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+
+  label:hover {
+    background: #e0e7ff;
+  }
+
+  input[type="radio"] {
+    margin-right: 0.6rem;
   }
 
   button {
-    margin-top: 1rem;
-    padding: 0.75rem 1.5rem;
-    background: #1e40af;
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 2rem;
+    background: linear-gradient(90deg, #1e40af, #3b82f6);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  button:hover {
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
+    transform: translateY(-2px);
   }
 
   #result {
-    max-width: 600px;
+    max-width: 700px;
     margin: 2rem auto;
     padding: 2rem;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #dbeafe, #e0f2fe);
     border: 2px solid #1e40af;
-    border-radius: 12px;
-    background: #e0e7ff;
     display: none;
+    animation: fadeIn 0.5s ease-in-out;
   }
 
   .principle {
-    margin-top: 1rem;
-    padding: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.2rem;
     background: #f5f7fa;
-    border-left: 4px solid #1e40af;
+    border-left: 6px solid #1e40af;
+    border-radius: 8px;
+    transition: transform 0.2s;
   }
 
   .principle h3 {
     margin: 0 0 0.5rem 0;
+  }
+
+  .principle:hover {
+    transform: translateX(4px);
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
   }
 </style>
 </head>
@@ -71,7 +117,7 @@
 
 <form id="quiz">
   <!-- Question 1 -->
-  <div>
+  <div class="question-card">
     <h2>1. Orientation Clarity</h2>
     <p>I clearly understand why processes, projects, or systems exist and what their high-level purpose is.</p>
     <label><input type="radio" name="q1" value="1"> Strongly Disagree</label>
@@ -82,7 +128,7 @@
   </div>
 
   <!-- Question 2 -->
-  <div>
+  <div class="question-card">
     <h2>2. Context Awareness</h2>
     <p>I understand how processes and systems fit into the bigger organizational picture and interact with each other.</p>
     <label><input type="radio" name="q2" value="1"> Strongly Disagree</label>
@@ -93,7 +139,7 @@
   </div>
 
   <!-- Question 3 -->
-  <div>
+  <div class="question-card">
     <h2>3. Depth on Demand</h2>
     <p>I know where to find detailed instructions or collateral when I need them without being overwhelmed by unnecessary complexity.</p>
     <label><input type="radio" name="q3" value="1"> Strongly Disagree</label>
@@ -104,7 +150,7 @@
   </div>
 
   <!-- Question 4 -->
-  <div>
+  <div class="question-card">
     <h2>4. Ownership Clarity</h2>
     <p>I can identify who is responsible for each process, project, or system from both a management and operational/technical perspective.</p>
     <label><input type="radio" name="q4" value="1"> Strongly Disagree</label>
@@ -115,7 +161,7 @@
   </div>
 
   <!-- Question 5 -->
-  <div>
+  <div class="question-card">
     <h2>5. Noise Filtering</h2>
     <p>I am able to focus on relevant information and avoid getting distracted by unnecessary or outdated details.</p>
     <label><input type="radio" name="q5" value="1"> Strongly Disagree</label>
@@ -126,7 +172,7 @@
   </div>
 
   <!-- Question 6 -->
-  <div>
+  <div class="question-card">
     <h2>6. Process Alignment</h2>
     <p>I understand how individual processes and tasks contribute to overall organizational goals.</p>
     <label><input type="radio" name="q6" value="1"> Strongly Disagree</label>
@@ -137,7 +183,7 @@
   </div>
 
   <!-- Question 7 -->
-  <div>
+  <div class="question-card">
     <h2>7. Decision Clarity</h2>
     <p>I feel confident that decisions I make are based on accurate, structured, and complete information.</p>
     <label><input type="radio" name="q7" value="1"> Strongly Disagree</label>
@@ -148,7 +194,7 @@
   </div>
 
   <!-- Question 8 -->
-  <div>
+  <div class="question-card">
     <h2>8. Stakeholder Awareness</h2>
     <p>I am aware of who the end users or stakeholders are for each process or system and understand their needs.</p>
     <label><input type="radio" name="q8" value="1"> Strongly Disagree</label>
@@ -159,7 +205,7 @@
   </div>
 
   <!-- Question 9 -->
-  <div>
+  <div class="question-card">
     <h2>9. Practical Execution</h2>
     <p>I can follow procedures effectively and know when and where to look for clarification if needed.</p>
     <label><input type="radio" name="q9" value="1"> Strongly Disagree</label>
@@ -170,7 +216,7 @@
   </div>
 
   <!-- Question 10 -->
-  <div>
+  <div class="question-card">
     <h2>10. Personal Improvement</h2>
     <p>I actively seek ways to improve how I consume, share, and structure information in my work.</p>
     <label><input type="radio" name="q10" value="1"> Strongly Disagree</label>
@@ -225,42 +271,27 @@ document.getElementById('quiz').addEventListener('submit', function(e){
   function evaluate(score, principle){
     if(score <= 5){
       switch(principle){
-        case 'orientation':
-          return "The company's orientation layer is weak. Employees struggle to understand why processes exist and what high-level actions are expected. Create clear, universal guidance for all systems and processes.";
-        case 'context':
-          return "Processes are disconnected and lack context. Define how each process interacts with others, which stakeholders are affected, and its place in the organizational workflow.";
-        case 'depth':
-          return "Detailed instructions are inaccessible or confusing. Maintain up-to-date background collateral that can be accessed on demand by those who need it.";
-        case 'ownership':
-          return "Responsibilities for processes and systems are unclear. Assign clear owners to ensure information accuracy, lifecycle management, and decision-making clarity.";
-        case 'noise':
-          return "Information is cluttered and overwhelming. Streamline communication, filter out irrelevant details, and provide only what employees and stakeholders truly need.";
+        case 'orientation': return "The company's orientation layer is weak. Employees struggle to understand why processes exist and what high-level actions are expected. Create clear, universal guidance for all systems and processes.";
+        case 'context': return "Processes are disconnected and lack context. Define how each process interacts with others, which stakeholders are affected, and its place in the organizational workflow.";
+        case 'depth': return "Detailed instructions are inaccessible or confusing. Maintain up-to-date background collateral that can be accessed on demand by those who need it.";
+        case 'ownership': return "Responsibilities for processes and systems are unclear. Assign clear owners to ensure information accuracy, lifecycle management, and decision-making clarity.";
+        case 'noise': return "Information is cluttered and overwhelming. Streamline communication, filter out irrelevant details, and provide only what employees and stakeholders truly need.";
       }
     } else if(score <= 8){
       switch(principle){
-        case 'orientation':
-          return "Orientation exists but is inconsistent. Reinforce high-level guidance so employees always understand purpose and key actions.";
-        case 'context':
-          return "Some context is provided, but gaps remain. Strengthen links between processes to ensure employees understand dependencies and organizational impact.";
-        case 'depth':
-          return "Depth is somewhat accessible but may not always be current. Encourage owners to maintain accurate, on-demand instructions.";
-        case 'ownership':
-          return "Ownership is partially defined. Close gaps by clearly specifying responsibility for all processes and retiring outdated information.";
-        case 'noise':
-          return "Information flow is mostly clear, but occasional noise can mislead employees or stakeholders. Regularly review and streamline communications.";
+        case 'orientation': return "Orientation exists but is inconsistent. Reinforce high-level guidance so employees always understand purpose and key actions.";
+        case 'context': return "Some context is provided, but gaps remain. Strengthen links between processes to ensure employees understand dependencies and organizational impact.";
+        case 'depth': return "Depth is somewhat accessible but may not always be current. Encourage owners to maintain accurate, on-demand instructions.";
+        case 'ownership': return "Ownership is partially defined. Close gaps by clearly specifying responsibility for all processes and retiring outdated information.";
+        case 'noise': return "Information flow is mostly clear, but occasional noise can mislead employees or stakeholders. Regularly review and streamline communications.";
       }
     } else {
       switch(principle){
-        case 'orientation':
-          return "The orientation layer is strong. Employees clearly understand purpose, objectives, and high-level expectations.";
-        case 'context':
-          return "Processes are well contextualized. Employees understand interactions, dependencies, and overall organizational impact.";
-        case 'depth':
-          return "Depth is effectively managed. Detailed instructions are maintained and accessible on demand.";
-        case 'ownership':
-          return "Ownership is clear. Responsibilities for processes and information are well-defined and actively maintained.";
-        case 'noise':
-          return "Information flow is structured and intentional. Employees and stakeholders receive clear, relevant signals without distraction.";
+        case 'orientation': return "The orientation layer is strong. Employees clearly understand purpose, objectives, and high-level expectations.";
+        case 'context': return "Processes are well contextualized. Employees understand interactions, dependencies, and overall organizational impact.";
+        case 'depth': return "Depth is effectively managed. Detailed instructions are maintained and accessible on demand.";
+        case 'ownership': return "Ownership is clear. Responsibilities for processes and information are well-defined and actively maintained.";
+        case 'noise': return "Information flow is structured and intentional. Employees and stakeholders receive clear, relevant signals without distraction.";
       }
     }
   }
