@@ -120,7 +120,7 @@ const symbols = [
     {icon:'🍀', score:3}
 ];
 
-// 10 paylines (indices of grid cells)
+// Paylines (indices of grid cells)
 const paylines = [
 // Horizontal lines (rows)
     [0,1,2,3,4],      // Top row
@@ -150,25 +150,37 @@ for(let i=0;i<rows*cols;i++){
     grid.push(cell);
 }
 
-// Animate spin
+// Animate spin column by column
 function animateSpin(finalSymbols) {
     return new Promise(resolve => {
-        let spinCount = 0;
-        const interval = setInterval(()=>{
-            for(let i=0;i<grid.length;i++){
-                const randomSymbol = symbols[Math.floor(Math.random()*symbols.length)].icon;
-                grid[i].textContent = randomSymbol;
-            }
-            spinCount++;
-            if(spinCount>15){
-                clearInterval(interval);
-                for(let i=0;i<grid.length;i++){
-                    grid[i].textContent = finalSymbols[i].icon;
-                    grid[i].classList.remove('win');
+        let colIndex = 0;
+
+        function spinColumn(col) {
+            let spinCount = 0;
+            const interval = setInterval(() => {
+                for(let row=0; row<rows; row++){
+                    const idx = row*cols + col;
+                    grid[idx].textContent = symbols[Math.floor(Math.random()*symbols.length)].icon;
                 }
-                resolve();
-            }
-        },50);
+                spinCount++;
+                if(spinCount > 15){
+                    clearInterval(interval);
+                    for(let row=0; row<rows; row++){
+                        const idx = row*cols + col;
+                        grid[idx].textContent = finalSymbols[idx].icon;
+                        grid[idx].classList.remove('win');
+                    }
+                    colIndex++;
+                    if(colIndex < cols){
+                        spinColumn(colIndex);
+                    } else {
+                        resolve();
+                    }
+                }
+            }, 50);
+        }
+
+        spinColumn(colIndex);
     });
 }
 
@@ -215,7 +227,7 @@ function animateBalance(oldBalance, newBalance){
                 clearInterval(interval);
                 resolve();
             }
-        },50); // change 50ms for faster/slower increment
+        },50);
     });
 }
 
@@ -226,7 +238,6 @@ async function spin(){
         return;
     }
 
-    // Stop previous payline animation
     if(paylineInterval) clearInterval(paylineInterval);
     const ctx = paylineCanvas.getContext('2d');
     ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
@@ -242,10 +253,8 @@ async function spin(){
         finalSymbols.push(symbols[Math.floor(Math.random()*symbols.length)]);
     }
 
-    // Animate spin
     await animateSpin(finalSymbols);
 
-    // Check paylines
     let totalWin = 0;
     const winningLines = [];
 
@@ -270,7 +279,6 @@ async function spin(){
         }
     });
 
-    // Animate balance increment
     if(totalWin>0){
         await animateBalance(balance, balance + totalWin);
         balance += totalWin;
@@ -283,7 +291,6 @@ async function spin(){
 }
 
 spinBtn.addEventListener('click', spin);
-
 </script>
 </body>
 </html>
