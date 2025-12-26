@@ -11,6 +11,7 @@ body {
     background: #1e1e2f;
     color: #fff;
     padding: 2rem;
+    position: relative;
 }
 
 h1 {
@@ -21,6 +22,11 @@ h1 {
 #balance {
     margin-bottom: 1rem;
     font-size: 1.2rem;
+}
+
+#slot-container {
+    position: relative;
+    display: inline-block;
 }
 
 #slot-grid {
@@ -67,13 +73,22 @@ h1 {
     font-size: 1.2rem;
 }
 
+#payline-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
 </style>
 </head>
 <body>
 
 <h1>5x5 Slot Machine</h1>
 <div id="balance">Balance: 100 Coins</div>
-<div id="slot-grid"></div>
+<div id="slot-container">
+    <div id="slot-grid"></div>
+    <canvas id="payline-canvas" width="450" height="450"></canvas>
+</div>
 <button id="spin-btn">Spin</button>
 <div id="message"></div>
 
@@ -84,11 +99,13 @@ const balanceEl = document.getElementById('balance');
 const gridEl = document.getElementById('slot-grid');
 const spinBtn = document.getElementById('spin-btn');
 const messageEl = document.getElementById('message');
+const paylineCanvas = document.getElementById('payline-canvas');
 
 let balance = 100;
 const spinCost = 1;
+let paylineInterval;
 
-// Symbols with scoring per 3-in-line
+// Symbols with scoring
 const symbols = [
     {icon:'🍒', score:1},
     {icon:'🍋', score:1},
@@ -102,7 +119,7 @@ const symbols = [
     {icon:'🍀', score:3}
 ];
 
-// 10 paylines (indices of grid cells)
+// Paylines (indices of grid cells)
 const paylines = [
 // Horizontal lines (rows)
     [0,1,2,3,4],      // Top row
@@ -133,8 +150,8 @@ for(let i=0;i<rows*cols;i++){
 }
 
 // Animate spin
-function animateSpin(symbolsArr) {
-    return new Promise((resolve)=>{
+function animateSpin(finalSymbols) {
+    return new Promise(resolve => {
         let spinCount = 0;
         const interval = setInterval(()=>{
             for(let i=0;i<grid.length;i++){
@@ -144,9 +161,9 @@ function animateSpin(symbolsArr) {
             spinCount++;
             if(spinCount>15){
                 clearInterval(interval);
-                // Set final symbols
                 for(let i=0;i<grid.length;i++){
-                    grid[i].textContent = symbolsArr[i].icon;
+                    grid[i].textContent = finalSymbols[i].icon;
+                    grid[i].classList.remove('win');
                 }
                 resolve();
             }
@@ -154,42 +171,81 @@ function animateSpin(symbolsArr) {
     });
 }
 
+// Draw payline on canvas
+function drawPayline(line){
+    const ctx = paylineCanvas.getContext('2d');
+    ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
+    ctx.strokeStyle = 'rgba(255,0,0,0.7)';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    const startCell = grid[line[0]];
+    ctx.moveTo(startCell.offsetLeft + startCell.offsetWidth/2, startCell.offsetTop + startCell.offsetHeight/2);
+    for(let i=1;i<line.length;i++){
+        const c = grid[line[i]];
+        ctx.lineTo(c.offsetLeft + c.offsetWidth/2, c.offsetTop + c.offsetHeight/2);
+    }
+    ctx.stroke();
+}
+
+// Animate all winning lines in a loop
+function animateWinningLines(winningLines){
+    if(paylineInterval) clearInterval(paylineInterval);
+    if(winningLines.length===0){
+        const ctx = paylineCanvas.getContext('2d');
+        ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
+        return;
+    }
+    let index = 0;
+    paylineInterval = setInterval(()=>{
+        drawPayline(winningLines[index]);
+        index = (index + 1) % winningLines.length;
+    },1000);
+}
+
 // Spin function
-async function spin() {
+async function spin(){
     if(balance < spinCost){
         messageEl.textContent = 'Not enough coins to spin!';
         return;
     }
 
+    // Stop previous payline animation
+    if(paylineInterval) clearInterval(paylineInterval);
+    const ctx = paylineCanvas.getContext('2d');
+    ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
+
     balance -= spinCost;
     balanceEl.textContent = `Balance: ${balance} Coins`;
     messageEl.textContent = '';
-    
-    // Generate random symbols for final result
+
+    // Generate random symbols
     const finalSymbols = [];
     for(let i=0;i<rows*cols;i++){
         finalSymbols.push(symbols[Math.floor(Math.random()*symbols.length)]);
-        grid[i].classList.remove('win');
     }
 
-    // Animate reels
+    // Animate spin
     await animateSpin(finalSymbols);
 
     // Check paylines
     let totalWin = 0;
+    const winningLines = [];
+
     paylines.forEach(line=>{
-        const lineSymbols = line.map(idx=>finalSymbols[idx]);
-        // Count consecutive same symbols from left
+        const lineSymbols = line.map(idx => finalSymbols[idx]);
+        const firstSym = lineSymbols[0].icon;
         let matchCount = 1;
+
         for(let i=1;i<lineSymbols.length;i++){
-            if(lineSymbols[i].icon === lineSymbols[0].icon){
+            if(lineSymbols[i].icon===firstSym){
                 matchCount++;
             } else break;
         }
+
         if(matchCount>=3){
+            winningLines.push(line);
             const lineScore = lineSymbols[0].score * matchCount;
             totalWin += lineScore;
-            // Highlight winning cells
             for(let i=0;i<matchCount;i++){
                 grid[line[i]].classList.add('win');
             }
@@ -203,6 +259,8 @@ async function spin() {
     } else {
         messageEl.textContent = '😢 No win, try again!';
     }
+
+    animateWinningLines(winningLines);
 }
 
 spinBtn.addEventListener('click', spin);
