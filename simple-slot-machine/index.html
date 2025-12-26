@@ -5,34 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>5x5 Slot Machine</title>
 <style>
-  body {
+body {
     font-family: Arial, sans-serif;
     text-align: center;
     background: #1e1e2f;
     color: #fff;
     padding: 2rem;
-  }
+}
 
-  h1 {
+h1 {
     color: #ffcc00;
     margin-bottom: 1rem;
-  }
+}
 
-  #balance {
+#balance {
     margin-bottom: 1rem;
     font-size: 1.2rem;
-  }
+}
 
-  #slot-grid {
+#slot-grid {
     display: grid;
     grid-template-columns: repeat(5, 80px);
     grid-template-rows: repeat(5, 80px);
     gap: 10px;
     justify-content: center;
     margin-bottom: 1.5rem;
-  }
+}
 
-  .cell {
+.cell {
     background: #222;
     display: flex;
     justify-content: center;
@@ -40,14 +40,14 @@
     font-size: 2rem;
     border-radius: 8px;
     transition: transform 0.3s, background 0.3s;
-  }
+}
 
-  .cell.win {
+.cell.win {
     background: gold;
     transform: scale(1.2);
-  }
+}
 
-  #spin-btn {
+#spin-btn {
     padding: 15px 30px;
     font-size: 1.2rem;
     background: #ffcc00;
@@ -56,16 +56,17 @@
     border-radius: 10px;
     cursor: pointer;
     transition: background 0.3s;
-  }
+}
 
-  #spin-btn:hover {
+#spin-btn:hover {
     background: #ffd633;
-  }
+}
 
-  #message {
+#message {
     margin-top: 1rem;
     font-size: 1.2rem;
-  }
+}
+
 </style>
 </head>
 <body>
@@ -85,24 +86,29 @@ const spinBtn = document.getElementById('spin-btn');
 const messageEl = document.getElementById('message');
 
 let balance = 100;
-const betAmount = 5;
-const winAmount = 20;
+const spinCost = 1;
 
-// Define symbols
-const symbols = ['🍒','🍋','🍊','⭐','7','🔔','💎','🍉','🍇','🍀','🔥','🌟'];
+// Symbols with scoring per 3-in-line
+const symbols = [
+    {icon:'🍒', score:1},
+    {icon:'🍋', score:1},
+    {icon:'🍊', score:2},
+    {icon:'⭐', score:3},
+    {icon:'7', score:5},
+    {icon:'🔔', score:2},
+    {icon:'💎', score:4},
+    {icon:'🍉', score:2},
+    {icon:'🍇', score:1},
+    {icon:'🍀', score:3}
+];
 
-// Define 10 paylines (indices of grid cells)
+// 10 paylines (indices of grid cells)
 const paylines = [
-  [0,1,2,3,4],       // Top row
-  [5,6,7,8,9],       // 2nd row
-  [10,11,12,13,14],  // Middle row
-  [15,16,17,18,19],  // 4th row
-  [20,21,22,23,24],  // Bottom row
-  [0,6,12,18,24],    // Diagonal top-left to bottom-right
-  [4,8,12,16,20],    // Diagonal top-right to bottom-left
-  [0,5,10,15,20],    // Left column
-  [4,9,14,19,24],    // Right column
-  [2,7,12,17,22]     // Middle column
+    [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14],
+    [15,16,17,18,19], [20,21,22,23,24],
+    [0,6,12,18,24], [4,8,12,16,20],
+    [0,5,10,15,20], [4,9,14,19,24],
+    [2,7,12,17,22]
 ];
 
 // Initialize grid
@@ -115,48 +121,81 @@ for(let i=0;i<rows*cols;i++){
     grid.push(cell);
 }
 
-// Spin logic
-function spin() {
-    if(balance < betAmount){
-        messageEl.textContent = 'Not enough balance to spin!';
+// Animate spin
+function animateSpin(symbolsArr) {
+    return new Promise((resolve)=>{
+        let spinCount = 0;
+        const interval = setInterval(()=>{
+            for(let i=0;i<grid.length;i++){
+                const randomSymbol = symbols[Math.floor(Math.random()*symbols.length)].icon;
+                grid[i].textContent = randomSymbol;
+            }
+            spinCount++;
+            if(spinCount>15){
+                clearInterval(interval);
+                // Set final symbols
+                for(let i=0;i<grid.length;i++){
+                    grid[i].textContent = symbolsArr[i].icon;
+                }
+                resolve();
+            }
+        },50);
+    });
+}
+
+// Spin function
+async function spin() {
+    if(balance < spinCost){
+        messageEl.textContent = 'Not enough coins to spin!';
         return;
     }
 
-    balance -= betAmount;
+    balance -= spinCost;
     balanceEl.textContent = `Balance: ${balance} Coins`;
     messageEl.textContent = '';
-
-    // Assign random symbols
-    const currentSymbols = [];
+    
+    // Generate random symbols for final result
+    const finalSymbols = [];
     for(let i=0;i<rows*cols;i++){
-        const sym = symbols[Math.floor(Math.random() * symbols.length)];
-        grid[i].textContent = sym;
+        finalSymbols.push(symbols[Math.floor(Math.random()*symbols.length)]);
         grid[i].classList.remove('win');
-        currentSymbols.push(sym);
     }
 
+    // Animate reels
+    await animateSpin(finalSymbols);
+
     // Check paylines
-    let totalWins = 0;
-    paylines.forEach(line => {
-        const firstSym = currentSymbols[line[0]];
-        if(line.every(idx => currentSymbols[idx] === firstSym)){
-            totalWins++;
-            line.forEach(idx => grid[idx].classList.add('win'));
+    let totalWin = 0;
+    paylines.forEach(line=>{
+        const lineSymbols = line.map(idx=>finalSymbols[idx]);
+        // Count consecutive same symbols from left
+        let matchCount = 1;
+        for(let i=1;i<lineSymbols.length;i++){
+            if(lineSymbols[i].icon === lineSymbols[0].icon){
+                matchCount++;
+            } else break;
+        }
+        if(matchCount>=3){
+            const lineScore = lineSymbols[0].score * matchCount;
+            totalWin += lineScore;
+            // Highlight winning cells
+            for(let i=0;i<matchCount;i++){
+                grid[line[i]].classList.add('win');
+            }
         }
     });
 
-    if(totalWins>0){
-        const totalWinAmount = winAmount * totalWins;
-        balance += totalWinAmount;
+    if(totalWin>0){
+        balance += totalWin;
         balanceEl.textContent = `Balance: ${balance} Coins`;
-        messageEl.textContent = `🎉 You won ${totalWinAmount} Coins on ${totalWins} lines!`;
+        messageEl.textContent = `🎉 You won ${totalWin} coins!`;
     } else {
         messageEl.textContent = '😢 No win, try again!';
     }
 }
 
 spinBtn.addEventListener('click', spin);
-</script>
 
+</script>
 </body>
 </html>
