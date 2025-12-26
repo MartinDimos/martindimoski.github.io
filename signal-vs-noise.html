@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal vs Noise Analyzer</title>
+
+  <!-- Global site styles -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <!-- App-specific CSS (create next) -->
+  <!-- <link rel="stylesheet" href="./signal-vs-noise.css"> -->
+</head>
+
+<body>
+
+  <main class="container">
+
+    <section class="svna-card">
+
+      <!-- INTRO -->
+      <header class="svna-header">
+        <h1>Signal vs Noise Analyzer</h1>
+        <p>
+          Paste any text — article, tweet thread, email, or announcement.  
+          This tool highlights what carries <strong>signal</strong> and what is mostly <strong>noise</strong>.
+        </p>
+      </header>
+
+      <!-- INPUT -->
+      <section class="svna-input">
+        <textarea
+          id="inputText"
+          placeholder="Paste text here..."
+          rows="10"
+        ></textarea>
+
+        <button class="svna-button" onclick="analyzeText()">
+          Analyze
+        </button>
+      </section>
+
+      <!-- RESULTS -->
+      <section id="results" class="svna-results svna-hidden">
+
+        <h2>Analysis</h2>
+
+        <!-- SUMMARY -->
+        <div class="svna-summary">
+          <p><strong>Signal:</strong> <span id="signalCount">0</span></p>
+          <p><strong>Noise:</strong> <span id="noiseCount">0</span></p>
+          <p><strong>Opinion:</strong> <span id="opinionCount">0</span></p>
+        </div>
+
+        <!-- SENTENCE BREAKDOWN -->
+        <div id="sentenceBreakdown" class="svna-breakdown">
+          <!-- Injected dynamically -->
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <script>
+    function analyzeText() {
+      const text = document.getElementById("inputText").value.trim();
+      if (!text) return;
+
+      const sentences = text
+        .split(/(?<=[.!?])\s+/)
+        .filter(s => s.length > 10);
+
+      let signal = 0;
+      let noise = 0;
+      let opinion = 0;
+
+      const breakdown = document.getElementById("sentenceBreakdown");
+      breakdown.innerHTML = "";
+
+      sentences.forEach(sentence => {
+        const type = classifySentence(sentence);
+
+        if (type === "signal") signal++;
+        if (type === "noise") noise++;
+        if (type === "opinion") opinion++;
+
+        const el = document.createElement("div");
+        el.className = `svna-line svna-${type}`;
+        el.innerHTML = `
+          <span class="svna-label">${type.toUpperCase()}</span>
+          <span class="svna-text">${sentence}</span>
+        `;
+        breakdown.appendChild(el);
+      });
+
+      document.getElementById("signalCount").innerText = signal;
+      document.getElementById("noiseCount").innerText = noise;
+      document.getElementById("opinionCount").innerText = opinion;
+
+      document.getElementById("results").classList.remove("svna-hidden");
+    }
+
+    function classifySentence(sentence) {
+      const lower = sentence.toLowerCase();
+
+      // Heuristic rules (v1)
+      if (
+        lower.includes("%") ||
+        lower.match(/\d+/) ||
+        lower.includes("data") ||
+        lower.includes("increase") ||
+        lower.includes("decrease") ||
+        lower.includes("reported")
+      ) {
+        return "signal";
+      }
+
+      if (
+        lower.includes("we believe") ||
+        lower.includes("i think") ||
+        lower.includes("in my opinion") ||
+        lower.includes("should") ||
+        lower.includes("could")
+      ) {
+        return "opinion";
+      }
+
+      return "noise";
+    }
+  </script>
+
+</body>
+</html>
