@@ -194,104 +194,115 @@ const challenges = [
   "Reflect on one way to make tomorrow better"
 ];
 
-// Generate daily challenge based on date
-function getDaySeed() {
-  const today = new Date();
-  return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-}
+// Pick a random challenge
+  function getRandomChallenge() {
+    const index = Math.floor(Math.random() * challenges.length);
+    return challenges[index];
+  }
 
-function randomFromSeed(seed, max) {
-  let x = Math.sin(seed) * 10000;
-  return Math.floor((x - Math.floor(x)) * max);
-}
+  // Track streaks
+  function updateStreak() {
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem('lastChallengeDate');
+    let streak = parseInt(localStorage.getItem('streak')) || 0;
 
-function getTodaysChallenge() {
-  const seed = getDaySeed();
-  const index = randomFromSeed(seed, challenges.length);
-  return challenges[index];
-}
-
-// Track streaks
-function updateStreak() {
-  const today = new Date().toDateString();
-  const lastDate = localStorage.getItem('lastChallengeDate');
-  let streak = parseInt(localStorage.getItem('streak')) || 0;
-
-  if (lastDate !== today) {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    if (lastDate === yesterday.toDateString()) {
-      streak++;
-    } else {
-      streak = 1;
+    if (lastDate !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (lastDate === yesterday.toDateString()) {
+        streak++;
+      } else {
+        streak = 1;
+      }
+      localStorage.setItem('streak', streak);
+      localStorage.setItem('lastChallengeDate', today);
     }
-    localStorage.setItem('streak', streak);
-    localStorage.setItem('lastChallengeDate', today);
-  }
-  document.getElementById('streak').textContent = `Streak: ${streak} day${streak > 1 ? 's' : ''}`;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  updateStreak();
-  const challengeText = getTodaysChallenge();
-  const challengeDiv = document.getElementById('challenge');
-  challengeDiv.textContent = challengeText;
-
-  // Social share
-  const encodedText = encodeURIComponent(`Today's Challenge: ${challengeText}`);
-  document.getElementById("share-facebook").href =
-    `https://www.facebook.com/sharer/sharer.php?u=&quote=${encodedText}`;
-  document.getElementById("share-linkedin").href =
-    `https://www.linkedin.com/sharing/share-offsite/?url=&mini=true&summary=${encodedText}`;
-  document.getElementById("share-instagram").href =
-    `https://www.instagram.com/?url=&caption=${encodedText}`;
-
-  // Scratch card setup
-  const canvas = document.getElementById('scratch-canvas');
-  const ctx = canvas.getContext('2d');
-  const container = document.getElementById('scratch-container');
-
-  function resizeCanvas() {
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-    ctx.fillStyle = '#999'; // Scratch layer color
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('streak').textContent = `Streak: ${streak} day${streak > 1 ? 's' : ''}`;
+    return streak;
   }
 
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  document.addEventListener("DOMContentLoaded", () => {
+    const streak = updateStreak();
 
-  let isDrawing = false;
+    // Get challenge
+    let challengeText = getRandomChallenge();
 
-  function startDrawing(e) {
-    isDrawing = true;
-    draw(e);
-  }
+    // Optional: store one per day for consistency
+    const todayKey = new Date().toDateString();
+    if (!localStorage.getItem(todayKey)) {
+      localStorage.setItem(todayKey, challengeText);
+    } else {
+      challengeText = localStorage.getItem(todayKey);
+    }
 
-  function stopDrawing() {
-    isDrawing = false;
-    ctx.beginPath();
-  }
+    const challengeDiv = document.getElementById('challenge');
+    challengeDiv.textContent = challengeText;
 
-  function draw(e) {
-    if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    let x = (e.clientX || e.touches[0].clientX) - rect.left;
-    let y = (e.clientY || e.touches[0].clientY) - rect.top;
+    // Scratch card setup
+    const canvas = document.getElementById('scratch-canvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('scratch-container');
 
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2);
-    ctx.fill();
-  }
+    function resizeCanvas() {
+      canvas.width = container.offsetWidth;
+      canvas.height = container.offsetHeight;
+      ctx.fillStyle = '#999'; // Scratch layer color
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('touchstart', startDrawing);
-  canvas.addEventListener('touchmove', draw);
-  canvas.addEventListener('touchend', stopDrawing);
-});
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let isDrawing = false;
+
+    function startDrawing(e) {
+      isDrawing = true;
+      draw(e);
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.beginPath();
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      let x = (e.clientX || e.touches[0].clientX) - rect.left;
+      let y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    // Social share
+    const appUrl = "https://martindimoski.dev/random-life-challenge-generator/index.html";
+    const shareText = `I've just got today's challenge from Martin's app ${appUrl}. I have the following challenge: "${challengeText}". PS: My daily streak is ${streak} day${streak > 1 ? 's' : ''}.`;
+    const encodedShareText = encodeURIComponent(shareText);
+
+    document.getElementById("share-facebook").href =
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(appUrl)}&quote=${encodedShareText}`;
+
+    document.getElementById("share-linkedin").href =
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(appUrl)}&summary=${encodedShareText}`;
+
+    document.getElementById("share-instagram").addEventListener("click", (e) => {
+      e.preventDefault();
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert("Challenge text copied! Paste it in your Instagram post.");
+        window.open("https://www.instagram.com/", "_blank");
+      });
+    });
+  });
 </script>
 </body>
 </html>
