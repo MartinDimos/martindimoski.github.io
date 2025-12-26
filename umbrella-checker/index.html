@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umbrella Checker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f8ff;
+    padding: 3rem;
+    color: #111827;
+  }
+
+  h1 {
+    color: #1e40af;
+    margin-bottom: 2rem;
+  }
+
+  #check-umbrella {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #check-umbrella:hover {
+    background: #3743a0;
+  }
+
+  #result {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  #weather-details {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #374151;
+  }
+
+  .icon {
+    font-size: 3rem;
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+  <h1>Umbrella Checker 🌂</h1>
+  <button id="check-umbrella">Check if I need an Umbrella today!</button>
+  <div id="result"></div>
+  <div id="weather-details"></div>
+  <div id="icon" class="icon"></div>
+
+<script>
+document.getElementById('check-umbrella').addEventListener('click', () => {
+  const resultDiv = document.getElementById('result');
+  const detailsDiv = document.getElementById('weather-details');
+  const iconDiv = document.getElementById('icon');
+
+  resultDiv.textContent = 'Checking weather...';
+  detailsDiv.textContent = '';
+  iconDiv.textContent = '';
+
+  if (!navigator.geolocation) {
+    resultDiv.textContent = 'Geolocation not supported by your browser.';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    const apiKey = '8de94ed1c433ad9e49cb44135c1f87d9';
+    const apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${apiKey}`;
+
+    try {
+      const response = await fetch(apiURL);
+      const data = await response.json();
+      const today = data.daily[0];
+
+      const rainChance = today.pop; // probability of precipitation (0-1)
+      const temp = today.temp.day.toFixed(1);
+      const desc = today.weather[0].description;
+
+      // Umbrella suggestion
+      if (rainChance > 0.3) {
+        resultDiv.textContent = '☔ Take an umbrella, it might rain today!';
+        iconDiv.textContent = '🌧️';
+      } else {
+        resultDiv.textContent = '✅ No umbrella needed today!';
+        iconDiv.textContent = '☀️';
+      }
+
+      // Weather details
+      detailsDiv.textContent = `Temperature: ${temp}°C, ${desc}, Chance of rain: ${(rainChance*100).toFixed(0)}%`;
+
+    } catch (err) {
+      console.error(err);
+      resultDiv.textContent = 'Unable to fetch weather data.';
+    }
+
+  }, (err) => {
+    console.error(err);
+    resultDiv.textContent = 'Unable to retrieve your location.';
+  });
+});
+</script>
+</body>
+</html>
