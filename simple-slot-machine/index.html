@@ -231,16 +231,32 @@ paylines.forEach((line, index)=>{
     paylineBoxes.push(box);
 });
 
-// Animate spin (all at once)
+// Animate spin with rolling effect
 function animateSpin(finalSymbols) {
     return new Promise(resolve => {
-        for(let i=0;i<grid.length;i++){
-            grid[i].textContent = finalSymbols[i].icon;
-            grid[i].classList.remove('win');
-        }
-        resolve();
+        let spins = 0;
+        const maxSpins = 20; // Number of animation frames
+
+        const interval = setInterval(() => {
+            for (let i = 0; i < grid.length; i++) {
+                // Random symbol for animation
+                grid[i].textContent = symbols[Math.floor(Math.random() * symbols.length)].icon;
+            }
+
+            spins++;
+            if (spins >= maxSpins) {
+                clearInterval(interval);
+                // Show final symbols
+                for (let i = 0; i < grid.length; i++) {
+                    grid[i].textContent = finalSymbols[i].icon;
+                    grid[i].classList.remove('win');
+                }
+                resolve();
+            }
+        }, 50); // 50ms between frames
     });
 }
+
 
 // Draw payline on canvas
 function drawPayline(line){
