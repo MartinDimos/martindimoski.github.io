@@ -78,7 +78,7 @@ document.getElementById('check-umbrella').addEventListener('click', () => {
     const lon = position.coords.longitude;
 
     const apiKey = '6f458e67feebfb9b81316b09fc671c4a';
-    const apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=metric&appid=${apiKey}`;
+    const apiURL = `api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt={cnt}&appid=${apiKey}`;
 
     try {
       const response = await fetch(apiURL);
