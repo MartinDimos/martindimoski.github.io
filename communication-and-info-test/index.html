@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Information Clarity Quiz</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4ff;
+    color: #111827;
+    padding: 2rem;
+  }
+
+  h1, h2 {
+    color: #1e40af; /* Navi blue */
+  }
+
+  form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  label {
+    display: block;
+    margin: 0.5rem 0;
+    cursor: pointer;
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  #result {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 2px solid #1e40af;
+    border-radius: 12px;
+    background: #e0e7ff;
+    display: none;
+  }
+
+  .principle {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f5f7fa;
+    border-left: 4px solid #1e40af;
+  }
+
+  .principle h3 {
+    margin: 0 0 0.5rem 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Information Clarity Quiz</h1>
+<p>Answer the following 10 questions to see how well your company structures and shares information according to modern organizational principles.</p>
+
+<form id="quiz">
+  <!-- Question 1 -->
+  <div>
+    <h2>1. Orientation Clarity</h2>
+    <label><input type="radio" name="q1" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q1" value="2"> Disagree</label>
+    <label><input type="radio" name="q1" value="3"> Neutral</label>
+    <label><input type="radio" name="q1" value="4"> Agree</label>
+    <label><input type="radio" name="q1" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 2 -->
+  <div>
+    <h2>2. Context Awareness</h2>
+    <label><input type="radio" name="q2" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q2" value="2"> Disagree</label>
+    <label><input type="radio" name="q2" value="3"> Neutral</label>
+    <label><input type="radio" name="q2" value="4"> Agree</label>
+    <label><input type="radio" name="q2" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 3 -->
+  <div>
+    <h2>3. Depth on Demand</h2>
+    <label><input type="radio" name="q3" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q3" value="2"> Disagree</label>
+    <label><input type="radio" name="q3" value="3"> Neutral</label>
+    <label><input type="radio" name="q3" value="4"> Agree</label>
+    <label><input type="radio" name="q3" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 4 -->
+  <div>
+    <h2>4. Ownership Clarity</h2>
+    <label><input type="radio" name="q4" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q4" value="2"> Disagree</label>
+    <label><input type="radio" name="q4" value="3"> Neutral</label>
+    <label><input type="radio" name="q4" value="4"> Agree</label>
+    <label><input type="radio" name="q4" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 5 -->
+  <div>
+    <h2>5. Noise Filtering</h2>
+    <label><input type="radio" name="q5" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q5" value="2"> Disagree</label>
+    <label><input type="radio" name="q5" value="3"> Neutral</label>
+    <label><input type="radio" name="q5" value="4"> Agree</label>
+    <label><input type="radio" name="q5" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 6 -->
+  <div>
+    <h2>6. Process Alignment</h2>
+    <label><input type="radio" name="q6" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q6" value="2"> Disagree</label>
+    <label><input type="radio" name="q6" value="3"> Neutral</label>
+    <label><input type="radio" name="q6" value="4"> Agree</label>
+    <label><input type="radio" name="q6" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 7 -->
+  <div>
+    <h2>7. Decision Clarity</h2>
+    <label><input type="radio" name="q7" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q7" value="2"> Disagree</label>
+    <label><input type="radio" name="q7" value="3"> Neutral</label>
+    <label><input type="radio" name="q7" value="4"> Agree</label>
+    <label><input type="radio" name="q7" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 8 -->
+  <div>
+    <h2>8. Stakeholder Awareness</h2>
+    <label><input type="radio" name="q8" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q8" value="2"> Disagree</label>
+    <label><input type="radio" name="q8" value="3"> Neutral</label>
+    <label><input type="radio" name="q8" value="4"> Agree</label>
+    <label><input type="radio" name="q8" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 9 -->
+  <div>
+    <h2>9. Practical Execution</h2>
+    <label><input type="radio" name="q9" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q9" value="2"> Disagree</label>
+    <label><input type="radio" name="q9" value="3"> Neutral</label>
+    <label><input type="radio" name="q9" value="4"> Agree</label>
+    <label><input type="radio" name="q9" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 10 -->
+  <div>
+    <h2>10. Personal Improvement</h2>
+    <label><input type="radio" name="q10" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q10" value="2"> Disagree</label>
+    <label><input type="radio" name="q10" value="3"> Neutral</label>
+    <label><input type="radio" name="q10" value="4"> Agree</label>
+    <label><input type="radio" name="q10" value="5"> Strongly Agree</label>
+  </div>
+
+  <button type="submit">See Your Result</button>
+</form>
+
+<div id="result">
+  <h2>Your Result</h2>
+  <div class="principle">
+    <h3>Orientation</h3>
+    <p id="orientation"></p>
+  </div>
+  <div class="principle">
+    <h3>Context</h3>
+    <p id="context"></p>
+  </div>
+  <div class="principle">
+    <h3>Depth</h3>
+    <p id="depth"></p>
+  </div>
+  <div class="principle">
+    <h3>Ownership</h3>
+    <p id="ownership"></p>
+  </div>
+  <div class="principle">
+    <h3>Noise Filtering</h3>
+    <p id="noise"></p>
+  </div>
+</div>
+
+<script>
+document.getElementById('quiz').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  function getValue(q) {
+    const val = document.querySelector(`input[name="${q}"]:checked`);
+    return val ? parseInt(val.value) : 0;
+  }
+
+  const orientation = getValue('q1') + getValue('q6');
+  const context = getValue('q2') + getValue('q8');
+  const depth = getValue('q3') + getValue('q9');
+  const ownership = getValue('q4') + getValue('q7');
+  const noise = getValue('q5') + getValue('q10');
+
+  function evaluate(score, principle){
+    if(score <= 5){
+      switch(principle){
+        case 'orientation':
+          return "The company's orientation layer is weak. Employees struggle to understand why processes exist and what high-level actions are expected. Create clear, universal guidance for all systems and processes.";
+        case 'context':
+          return "Processes are disconnected and lack context. Define how each process interacts with others, which stakeholders are affected, and its place in the organizational workflow.";
+        case 'depth':
+          return "Detailed instructions are inaccessible or confusing. Maintain up-to-date background collateral that can be accessed on demand by those who need it.";
+        case 'ownership':
+          return "Responsibilities for processes and systems are unclear. Assign clear owners to ensure information accuracy, lifecycle management, and decision-making clarity.";
+        case 'noise':
+          return "Information is cluttered and overwhelming. Streamline communication, filter out irrelevant details, and provide only what employees and stakeholders truly need.";
+      }
+    } else if(score <= 8){
+      switch(principle){
+        case 'orientation':
+          return "Orientation exists but is inconsistent. Reinforce high-level guidance so employees always understand purpose and key actions.";
+        case 'context':
+          return "Some context is provided, but gaps remain. Strengthen links between processes to ensure employees understand dependencies and organizational impact.";
+        case 'depth':
+          return "Depth is somewhat accessible but may not always be current. Encourage owners to maintain accurate, on-demand instructions.";
+        case 'ownership':
+          return "Ownership is partially defined. Close gaps by clearly specifying responsibility for all processes and retiring outdated information.";
+        case 'noise':
+          return "Information flow is mostly clear, but occasional noise can mislead employees or stakeholders. Regularly review and streamline communications.";
+      }
+    } else {
+      switch(principle){
+        case 'orientation':
+          return "The orientation layer is strong. Employees clearly understand purpose, objectives, and high-level expectations.";
+        case 'context':
+          return "Processes are well contextualized. Employees understand interactions, dependencies, and overall organizational impact.";
+        case 'depth':
+          return "Depth is effectively managed. Detailed instructions are maintained and accessible on demand.";
+        case 'ownership':
+          return "Ownership is clear. Responsibilities for processes and information are well-defined and actively maintained.";
+        case 'noise':
+          return "Information flow is structured and intentional. Employees and stakeholders receive clear, relevant signals without distraction.";
+      }
+    }
+  }
+
+  document.getElementById('orientation').innerText = evaluate(orientation, 'orientation');
+  document.getElementById('context').innerText = evaluate(context, 'context');
+  document.getElementById('depth').innerText = evaluate(depth, 'depth');
+  document.getElementById('ownership').innerText = evaluate(ownership, 'ownership');
+  document.getElementById('noise').innerText = evaluate(noise, 'noise');
+
+  document.getElementById('result').style.display = 'block';
+});
+</script>
+
+</body>
+</html>
