@@ -85,7 +85,7 @@ h1 {
 #pay-table {
     margin-top: 50px;
     text-align: left;
-    max-width: 700px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     background: #2b2b3d;
@@ -99,20 +99,27 @@ h1 {
     text-align: center;
 }
 
-#paylines-list {
-    margin-top: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+#pay-table table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+#pay-table th, #pay-table td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+}
+
+#pay-table th {
+    background: #444;
 }
 
 .payline-box {
     background: #333;
     padding: 5px;
     border-radius: 5px;
-    width: 120px;
-    text-align: center;
+    margin: 3px 0;
     transition: background 0.3s;
 }
 
@@ -121,27 +128,16 @@ h1 {
     color: #1e1e2f;
 }
 
-.mini-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 20px);
-    grid-template-rows: repeat(5, 20px);
-    gap: 2px;
-    margin-top: 5px;
+.symbol-cell {
+    display: inline-block;
+    width: 30px;
+    font-size: 1.2rem;
+    transition: background 0.3s;
 }
 
-.mini-cell {
-    width: 20px;
-    height: 20px;
-    background: #222;
-    border-radius: 3px;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.mini-cell.win {
+.symbol-cell.win {
     background: gold;
+    border-radius: 4px;
 }
 </style>
 </head>
@@ -160,7 +156,13 @@ h1 {
 <div id="pay-table">
     <h2>Pay Table</h2>
     <p><strong>Symbol Values:</strong></p>
-    <div id="symbols-table"></div>
+    <table id="symbols-table">
+        <tr>
+            <th>Symbol</th>
+            <th>Coins per Match</th>
+            <th>Example 3-in-row</th>
+        </tr>
+    </table>
 
     <p><strong>Paylines:</strong></p>
     <div id="paylines-list"></div>
@@ -193,7 +195,7 @@ const symbols = [
     {icon:'🍀', score:3}
 ];
 
-// PAYLINES (custom)
+// PAYLINES (as provided)
 const paylines = [
     [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
     [0,6,12,18,24],[20,16,12,8,4],
@@ -201,7 +203,7 @@ const paylines = [
     [0,6,7,8,4],[20,16,17,18,24]
 ];
 
-// Initialize main grid
+// Initialize grid
 const grid = [];
 for(let i=0;i<rows*cols;i++){
     const cell = document.createElement('div');
@@ -210,42 +212,26 @@ for(let i=0;i<rows*cols;i++){
     grid.push(cell);
 }
 
-// Build Symbol Table
+// Build Pay Table
 const symbolsTable = document.getElementById('symbols-table');
 symbols.forEach(s => {
-    const div = document.createElement('div');
-    div.style.marginBottom = '5px';
-    div.innerHTML = `${s.icon} : ${s.score} coin(s) - Example: ${s.icon}${s.icon}${s.icon}`;
-    div.classList.add('symbol-cell');
-    symbolsTable.appendChild(div);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="symbol-cell">${s.icon}</td><td>${s.score} coin(s)</td><td>${s.icon}${s.icon}${s.icon}</td>`;
+    symbolsTable.appendChild(tr);
 });
 
-// Build Paylines Table
+// Display Paylines visually
 const paylinesList = document.getElementById('paylines-list');
 const paylineBoxes = [];
-paylines.forEach((line, idx)=>{
+paylines.forEach((line, index)=>{
     const box = document.createElement('div');
     box.classList.add('payline-box');
-
-    // Create mini 5x5 grid
-    const miniGrid = document.createElement('div');
-    miniGrid.classList.add('mini-grid');
-    const miniCells = [];
-    for(let i=0;i<25;i++){
-        const c = document.createElement('div');
-        c.classList.add('mini-cell');
-        miniGrid.appendChild(c);
-        miniCells.push(c);
-    }
-
-    box.innerHTML = `<div>Line ${idx+1}</div>`;
-    box.appendChild(miniGrid);
+    box.textContent = `Line ${index+1}: ${line.join('-')}`;
     paylinesList.appendChild(box);
-
-    paylineBoxes.push({box, miniCells});
+    paylineBoxes.push(box);
 });
 
-// Animate spin
+// Animate spin (all at once)
 function animateSpin(finalSymbols) {
     return new Promise(resolve => {
         for(let i=0;i<grid.length;i++){
@@ -282,7 +268,7 @@ function animateWinningLines(winningLines){
     }
     let index = 0;
     paylineInterval = setInterval(()=>{
-        drawPayline(winningLines[index].line);
+        drawPayline(winningLines[index]);
         index = (index + 1) % winningLines.length;
     },1000);
 }
@@ -303,10 +289,9 @@ function animateBalance(oldBalance, newBalance){
     });
 }
 
-// Clear previous highlights
-function clearHighlights(){
-    document.querySelectorAll('.payline-box').forEach(pb=>pb.box?.classList.remove('win'));
-    document.querySelectorAll('.mini-cell').forEach(c=>c.classList.remove('win'));
+// Clear previous highlights in Pay Table
+function clearPayTableHighlights(){
+    document.querySelectorAll('.payline-box').forEach(b=>b.classList.remove('win'));
     document.querySelectorAll('.symbol-cell').forEach(s=>s.classList.remove('win'));
 }
 
@@ -320,13 +305,14 @@ async function spin(){
     if(paylineInterval) clearInterval(paylineInterval);
     const ctx = paylineCanvas.getContext('2d');
     ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
-    clearHighlights();
+    clearPayTableHighlights();
 
     const oldBalance = balance;
     balance -= spinCost;
     balanceEl.textContent = `Balance: ${balance} Coins`;
     messageEl.textContent = '';
 
+    // Generate random symbols
     const finalSymbols = [];
     for(let i=0;i<rows*cols;i++){
         finalSymbols.push(symbols[Math.floor(Math.random()*symbols.length)]);
@@ -342,26 +328,23 @@ async function spin(){
         const firstSym = lineSymbols[0].icon;
         let matchCount = 1;
         for(let i=1;i<lineSymbols.length;i++){
-            if(lineSymbols[i].icon===firstSym) matchCount++;
-            else break;
+            if(lineSymbols[i].icon===firstSym){
+                matchCount++;
+            } else break;
         }
         if(matchCount>=3){
-            winningLines.push({line, idx, matchCount, symbol:firstSym});
+            winningLines.push(line);
             const lineScore = lineSymbols[0].score * matchCount;
             totalWin += lineScore;
-            // Highlight grid
+            // Highlight winning symbols in grid
             for(let i=0;i<matchCount;i++){
                 grid[line[i]].classList.add('win');
             }
-            // Highlight payline box
-            paylineBoxes[idx].box.classList.add('win');
-            // Highlight mini grid cells
-            line.slice(0,matchCount).forEach(i=>{
-                paylineBoxes[idx].miniCells[i].classList.add('win');
-            });
-            // Highlight symbol in symbol table
+            // Highlight corresponding payline in Pay Table
+            paylineBoxes[idx].classList.add('win');
+            // Highlight matching symbol in Pay Table
             document.querySelectorAll('.symbol-cell').forEach(s=>{
-                if(s.textContent.includes(firstSym)) s.classList.add('win');
+                if(s.textContent===firstSym) s.classList.add('win');
             });
         }
     });
