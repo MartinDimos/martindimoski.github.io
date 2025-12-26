@@ -80,6 +80,53 @@ h1 {
     left: 0;
     pointer-events: none;
 }
+
+/* Pay Table Styles */
+#pay-table {
+    margin-top: 50px;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #2b2b3d;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#pay-table h2 {
+    color: #ffcc00;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#pay-table table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+#pay-table th, #pay-table td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+}
+
+#pay-table th {
+    background: #444;
+}
+
+#paylines-list {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    font-size: 0.9rem;
+}
+.payline-box {
+    background: #333;
+    padding: 5px;
+    border-radius: 5px;
+}
 </style>
 </head>
 <body>
@@ -92,6 +139,32 @@ h1 {
 </div>
 <button id="spin-btn">Spin</button>
 <div id="message"></div>
+
+<!-- PAY TABLE -->
+<div id="pay-table">
+    <h2>Pay Table</h2>
+    <p><strong>Symbol Values:</strong></p>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Coins per Match</th>
+            <th>Example 3-in-row</th>
+        </tr>
+        <tr><td>🍒</td><td>1 coin</td><td>🍒🍒🍒</td></tr>
+        <tr><td>🍋</td><td>1 coin</td><td>🍋🍋🍋</td></tr>
+        <tr><td>🍊</td><td>2 coins</td><td>🍊🍊🍊</td></tr>
+        <tr><td>⭐</td><td>3 coins</td><td>⭐⭐⭐</td></tr>
+        <tr><td>7</td><td>5 coins</td><td>7 7 7</td></tr>
+        <tr><td>🔔</td><td>2 coins</td><td>🔔🔔🔔</td></tr>
+        <tr><td>💎</td><td>4 coins</td><td>💎💎💎</td></tr>
+        <tr><td>🍉</td><td>2 coins</td><td>🍉🍉🍉</td></tr>
+        <tr><td>🍇</td><td>1 coin</td><td>🍇🍇🍇</td></tr>
+        <tr><td>🍀</td><td>3 coins</td><td>🍀🍀🍀</td></tr>
+    </table>
+
+    <p><strong>Paylines:</strong></p>
+    <div id="paylines-list"></div>
+</div>
 
 <script>
 const rows = 5;
@@ -120,24 +193,11 @@ const symbols = [
     {icon:'🍀', score:3}
 ];
 
-// Paylines (indices of grid cells)
+// Paylines
 const paylines = [
-// Horizontal lines (rows)
-    [0,1,2,3,4],      // Top row
-    [5,6,7,8,9],      // 2nd row
-    [10,11,12,13,14], // Middle row
-    [15,16,17,18,19], // 4th row
-    [20,21,22,23,24], // Bottom row
-
-    // Diagonals starting from left
-    [0,6,12,18,24],   // Top-left to bottom-right
-    [20,16,12,8,4],     // Bottom-left to top-righ
-
-    // Zigzag / angled lines 
-    [0,6,12,8,4],   // Left-top to middle to right top
-    [20,16,12,18,24],   // left-bot to middle to right bot 
-    [0,6,7,8,4],   // Left top with second 3 with right top
-    [20,16,17,18,24],   // Left bottom with second 3 with right bottom
+    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+    [0,6,12,18,24],[20,16,12,8,4],[0,6,12,8,4],[20,16,12,18,24],[0,6,7,8,4],[20,16,17,18,24]
 ];
 
 // Initialize grid
@@ -150,41 +210,29 @@ for(let i=0;i<rows*cols;i++){
     grid.push(cell);
 }
 
-// Animate spin column by column
+// Animate spin (all at once)
 function animateSpin(finalSymbols) {
     return new Promise(resolve => {
-        let colIndex = 0;
-
-        function spinColumn(col) {
-            let spinCount = 0;
-            const interval = setInterval(() => {
-                for(let row=0; row<rows; row++){
-                    const idx = row*cols + col;
-                    grid[idx].textContent = symbols[Math.floor(Math.random()*symbols.length)].icon;
+        let spinCount = 0;
+        const interval = setInterval(() => {
+            for(let i=0;i<grid.length;i++){
+                const randomSymbol = symbols[Math.floor(Math.random()*symbols.length)].icon;
+                grid[i].textContent = randomSymbol;
+            }
+            spinCount++;
+            if(spinCount > 15){
+                clearInterval(interval);
+                for(let i=0;i<grid.length;i++){
+                    grid[i].textContent = finalSymbols[i].icon;
+                    grid[i].classList.remove('win');
                 }
-                spinCount++;
-                if(spinCount > 15){
-                    clearInterval(interval);
-                    for(let row=0; row<rows; row++){
-                        const idx = row*cols + col;
-                        grid[idx].textContent = finalSymbols[idx].icon;
-                        grid[idx].classList.remove('win');
-                    }
-                    colIndex++;
-                    if(colIndex < cols){
-                        spinColumn(colIndex);
-                    } else {
-                        resolve();
-                    }
-                }
-            }, 50);
-        }
-
-        spinColumn(colIndex);
+                resolve();
+            }
+        },50);
     });
 }
 
-// Draw payline on canvas
+// Draw payline
 function drawPayline(line){
     const ctx = paylineCanvas.getContext('2d');
     ctx.clearRect(0,0,paylineCanvas.width,paylineCanvas.height);
@@ -200,7 +248,7 @@ function drawPayline(line){
     ctx.stroke();
 }
 
-// Animate all winning lines in a loop
+// Animate winning lines
 function animateWinningLines(winningLines){
     if(paylineInterval) clearInterval(paylineInterval);
     if(winningLines.length===0){
@@ -231,7 +279,7 @@ function animateBalance(oldBalance, newBalance){
     });
 }
 
-// Spin function
+// Spin
 async function spin(){
     if(balance < spinCost){
         messageEl.textContent = 'Not enough coins to spin!';
@@ -247,7 +295,6 @@ async function spin(){
     balanceEl.textContent = `Balance: ${balance} Coins`;
     messageEl.textContent = '';
 
-    // Generate random symbols
     const finalSymbols = [];
     for(let i=0;i<rows*cols;i++){
         finalSymbols.push(symbols[Math.floor(Math.random()*symbols.length)]);
@@ -262,13 +309,11 @@ async function spin(){
         const lineSymbols = line.map(idx => finalSymbols[idx]);
         const firstSym = lineSymbols[0].icon;
         let matchCount = 1;
-
         for(let i=1;i<lineSymbols.length;i++){
             if(lineSymbols[i].icon===firstSym){
                 matchCount++;
             } else break;
         }
-
         if(matchCount>=3){
             winningLines.push(line);
             const lineScore = lineSymbols[0].score * matchCount;
@@ -291,6 +336,15 @@ async function spin(){
 }
 
 spinBtn.addEventListener('click', spin);
+
+// Display Paylines visually
+const paylinesList = document.getElementById('paylines-list');
+paylines.forEach((line, index)=>{
+    const box = document.createElement('div');
+    box.classList.add('payline-box');
+    box.textContent = `Line ${index+1}: ${line.join('-')}`;
+    paylinesList.appendChild(box);
+});
 </script>
 </body>
 </html>
