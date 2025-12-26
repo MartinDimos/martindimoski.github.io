@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="../styles/main.css">
-  <link rel="stylesheet" href="./time-perception.css">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Time Perception Experiment</title>
@@ -56,7 +53,7 @@
       margin-bottom: 1.5rem;
     }
 
-    .tp-.tp-button {
+    .tp-button {
       background: linear-gradient(135deg, #1e40af, #1e3a8a);
       border: none;
       color: white;
@@ -118,7 +115,7 @@
 
 <body>
 
-  <div class="card">
+  <div class="tp-card">
 
     <!-- INTRO -->
     <div id="intro">
@@ -127,31 +124,28 @@
         Click <strong>START</strong>.  
         Click <strong>STOP</strong> when you believe <strong>30 seconds</strong> have passed.
       </p>
-      <p>
-        No timers. No hints.  
-        Just your internal sense of time.
-      </p>
-      <.tp-button onclick="startExperiment()">Start</.tp-button>
+      <p>No timers. No hints. Just your internal sense of time.</p>
+      <button class="tp-button" onclick="startExperiment()">Start</button>
     </div>
 
     <!-- RUNNING -->
-    <div id="running" class="hidden">
+    <div id="running" class="tp-hidden">
       <h1>Time is running…</h1>
       <p>Stay focused. Stop when you feel 30 seconds have passed.</p>
-      <.tp-button onclick="stopExperiment()">Stop</.tp-button>
+      <button class="tp-button" onclick="stopExperiment()">Stop</button>
     </div>
 
     <!-- RESULT -->
-    <div id="result" class="hidden">
+    <div id="result" class="tp-hidden">
       <h1>Your Result</h1>
 
-      <div class="result">
-        <div class="metric" id="timeResult"></div>
-        <div class="metric" id="errorResult"></div>
-        <div class="bias" id="biasResult"></div>
+      <div class="tp-result">
+        <div class="tp-metric" id="timeResult"></div>
+        <div class="tp-metric" id="errorResult"></div>
+        <div class="tp-bias" id="biasResult"></div>
       </div>
 
-      <.tp-button class="secondary" onclick="restart()">Try Again</.tp-button>
+      <button class="tp-button secondary" onclick="restart()">Try Again</button>
 
       <footer>
         This experiment explores subjective time perception.  
@@ -163,21 +157,20 @@
 
   <script>
     const TARGET_SECONDS = 30;
-    let startTime;
+    let startTime = null;
 
     function startExperiment() {
       startTime = Date.now();
-      document.getElementById("intro").classList.add("hidden");
-      document.getElementById("running").classList.remove("hidden");
+      document.getElementById("intro").classList.add("tp-hidden");
+      document.getElementById("running").classList.remove("tp-hidden");
     }
 
     function stopExperiment() {
-      const endTime = Date.now();
-      const elapsed = (endTime - startTime) / 1000;
+      const elapsed = (Date.now() - startTime) / 1000;
       const error = elapsed - TARGET_SECONDS;
 
-      document.getElementById("running").classList.add("hidden");
-      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("running").classList.add("tp-hidden");
+      document.getElementById("result").classList.remove("tp-hidden");
 
       document.getElementById("timeResult").innerText =
         `You stopped at ${elapsed.toFixed(2)} seconds`;
@@ -185,41 +178,16 @@
       document.getElementById("errorResult").innerText =
         `Error: ${error > 0 ? "+" : ""}${error.toFixed(2)} seconds`;
 
-    let bias = "";
-    let isPerfect = false;
+      let bias = "";
 
-    if (elapsed < 18) {
-      bias = "Extreme overestimation. Time felt much longer than it was. This often appears under stress, anxiety, or strong anticipation.";
-    } else if (elapsed < 20) {
-      bias = "Strong overestimation. You likely rushed the stop, suggesting impatience or elevated arousal.";
-    } else if (elapsed < 22) {
-      bias = "Clear overestimation. Your internal clock is running faster than real time.";
-    } else if (elapsed < 24) {
-      bias = "Moderate overestimation. Attention may be split or externally oriented.";
-    } else if (elapsed < 26) {
-      bias = "Slight overestimation. You were alert but not fully immersed.";
-    } else if (elapsed < 28) {
-      bias = "Near-accurate, leaning fast. You have good time awareness with mild urgency bias.";
-    } else if (elapsed < 29) {
-      bias = "Very close. Your perception is well calibrated, with a small tendency to rush.";
-    } else if (elapsed <= 31) {
-      bias = "Spot on. Your internal sense of time is highly accurate.";
-      isPerfect = true;
-    } else if (elapsed <= 32) {
-      bias = "Very close. Strong temporal awareness with minimal drift.";
-    } else if (elapsed <= 34) {
-      bias = "Near-accurate, leaning slow. Likely mild immersion or relaxed focus.";
-    } else if (elapsed <= 36) {
-      bias = "Slight underestimation. Time felt shorter, often linked to engagement.";
-    } else if (elapsed <= 38) {
-      bias = "Moderate underestimation. You were likely absorbed in the moment.";
-    } else if (elapsed <= 40) {
-      bias = "Clear underestimation. Deep focus or reduced time monitoring.";
-    } else if (elapsed <= 42) {
-      bias = "Strong underestimation. You likely lost track of time completely.";
-    } else {
-      bias = "Extreme underestimation. Time compression is strong, commonly seen in flow states.";
-    }
+      if (elapsed < 18) bias = "Extreme overestimation. Time felt much longer than it was.";
+      else if (elapsed < 22) bias = "Clear overestimation. Your internal clock is running fast.";
+      else if (elapsed < 26) bias = "Slight overestimation. Mild urgency bias.";
+      else if (elapsed < 29) bias = "Very close. Well calibrated time sense.";
+      else if (elapsed <= 31) bias = "Spot on. Excellent time perception.";
+      else if (elapsed <= 34) bias = "Near accurate, leaning slow.";
+      else if (elapsed <= 38) bias = "Moderate underestimation. Likely immersion.";
+      else bias = "Extreme underestimation. Strong flow-state effect.";
 
       document.getElementById("biasResult").innerText = bias;
 
@@ -227,21 +195,16 @@
     }
 
     function restart() {
-      document.getElementById("result").classList.add("hidden");
-      document.getElementById("intro").classList.remove("hidden");
+      document.getElementById("result").classList.add("tp-hidden");
+      document.getElementById("intro").classList.remove("tp-hidden");
     }
 
     function saveResult(value) {
       const data = JSON.parse(localStorage.getItem("time-perception-data") || "[]");
-      data.push({
-        value: value,
-        timestamp: new Date().toISOString()
-      });
+      data.push({ value, timestamp: new Date().toISOString() });
       localStorage.setItem("time-perception-data", JSON.stringify(data));
     }
   </script>
-<div id=".tp-congrats" class="congrats hidden">
-  🎯 Excellent time perception!
-</div>
+
 </body>
 </html>
