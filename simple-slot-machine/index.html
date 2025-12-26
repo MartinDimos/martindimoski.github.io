@@ -104,11 +104,22 @@ const symbols = [
 
 // 10 paylines (indices of grid cells)
 const paylines = [
-    [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14],
-    [15,16,17,18,19], [20,21,22,23,24],
-    [0,6,12,18,24], [4,8,12,16,20],
-    [0,5,10,15,20], [4,9,14,19,24],
-    [2,7,12,17,22]
+// Horizontal lines (rows)
+    [0,1,2,3,4],      // Top row
+    [5,6,7,8,9],      // 2nd row
+    [10,11,12,13,14], // Middle row
+    [15,16,17,18,19], // 4th row
+    [20,21,22,23,24], // Bottom row
+
+    // Diagonals starting from left
+    [0,6,12,18,24],   // Top-left to bottom-right
+    [20,16,12,8,4],     // Bottom-left to top-righ
+
+    // Zigzag / angled lines 
+    [0,6,12,8,4],   // Left-top to middle to right top
+    [20,16,12,18,24],   // left-bot to middle to right bot 
+    [0,6,7,8,4],   // Left top with second 3 with right top
+    [20,16,17,18,24],   // Left bottom with second 3 with right bottom
 ];
 
 // Initialize grid
