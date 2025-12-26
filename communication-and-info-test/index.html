@@ -20,7 +20,7 @@
     background: #ffffff;
     padding: 2rem;
     border-radius: 12px;
-    max-width: 700px;
+    max-width: 600px;
     margin: auto;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
@@ -43,7 +43,7 @@
   }
 
   #result {
-    max-width: 700px;
+    max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
     border: 2px solid #1e40af;
@@ -70,8 +70,7 @@
 <p>Answer the following 10 questions to see how well your company structures and shares information according to modern organizational principles.</p>
 
 <form id="quiz">
-
-  <!-- Orientation -->
+  <!-- Question 1 -->
   <div>
     <h2>1. Orientation Clarity</h2>
     <p>I clearly understand why processes, projects, or systems exist and what their high-level purpose is.</p>
@@ -82,17 +81,7 @@
     <label><input type="radio" name="q1" value="5"> Strongly Agree</label>
   </div>
 
-  <div>
-    <h2>6. Process Alignment</h2>
-    <p>I understand how individual processes and tasks contribute to overall organizational goals.</p>
-    <label><input type="radio" name="q6" value="1"> Strongly Disagree</label>
-    <label><input type="radio" name="q6" value="2"> Disagree</label>
-    <label><input type="radio" name="q6" value="3"> Neutral</label>
-    <label><input type="radio" name="q6" value="4"> Agree</label>
-    <label><input type="radio" name="q6" value="5"> Strongly Agree</label>
-  </div>
-
-  <!-- Context -->
+  <!-- Question 2 -->
   <div>
     <h2>2. Context Awareness</h2>
     <p>I understand how processes and systems fit into the bigger organizational picture and interact with each other.</p>
@@ -103,17 +92,7 @@
     <label><input type="radio" name="q2" value="5"> Strongly Agree</label>
   </div>
 
-  <div>
-    <h2>8. Stakeholder Awareness</h2>
-    <p>I am aware of who the end users or stakeholders are for each process or system and understand their needs.</p>
-    <label><input type="radio" name="q8" value="1"> Strongly Disagree</label>
-    <label><input type="radio" name="q8" value="2"> Disagree</label>
-    <label><input type="radio" name="q8" value="3"> Neutral</label>
-    <label><input type="radio" name="q8" value="4"> Agree</label>
-    <label><input type="radio" name="q8" value="5"> Strongly Agree</label>
-  </div>
-
-  <!-- Depth -->
+  <!-- Question 3 -->
   <div>
     <h2>3. Depth on Demand</h2>
     <p>I know where to find detailed instructions or collateral when I need them without being overwhelmed by unnecessary complexity.</p>
@@ -124,17 +103,7 @@
     <label><input type="radio" name="q3" value="5"> Strongly Agree</label>
   </div>
 
-  <div>
-    <h2>9. Practical Execution</h2>
-    <p>I can follow procedures effectively and know when and where to look for clarification if needed.</p>
-    <label><input type="radio" name="q9" value="1"> Strongly Disagree</label>
-    <label><input type="radio" name="q9" value="2"> Disagree</label>
-    <label><input type="radio" name="q9" value="3"> Neutral</label>
-    <label><input type="radio" name="q9" value="4"> Agree</label>
-    <label><input type="radio" name="q9" value="5"> Strongly Agree</label>
-  </div>
-
-  <!-- Ownership -->
+  <!-- Question 4 -->
   <div>
     <h2>4. Ownership Clarity</h2>
     <p>I can identify who is responsible for each process, project, or system from both a management and operational/technical perspective.</p>
@@ -145,17 +114,7 @@
     <label><input type="radio" name="q4" value="5"> Strongly Agree</label>
   </div>
 
-  <div>
-    <h2>7. Decision Clarity</h2>
-    <p>I feel confident that decisions I make are based on accurate, structured, and complete information.</p>
-    <label><input type="radio" name="q7" value="1"> Strongly Disagree</label>
-    <label><input type="radio" name="q7" value="2"> Disagree</label>
-    <label><input type="radio" name="q7" value="3"> Neutral</label>
-    <label><input type="radio" name="q7" value="4"> Agree</label>
-    <label><input type="radio" name="q7" value="5"> Strongly Agree</label>
-  </div>
-
-  <!-- Noise / Filtering -->
+  <!-- Question 5 -->
   <div>
     <h2>5. Noise Filtering</h2>
     <p>I am able to focus on relevant information and avoid getting distracted by unnecessary or outdated details.</p>
@@ -166,6 +125,51 @@
     <label><input type="radio" name="q5" value="5"> Strongly Agree</label>
   </div>
 
+  <!-- Question 6 -->
+  <div>
+    <h2>6. Process Alignment</h2>
+    <p>I understand how individual processes and tasks contribute to overall organizational goals.</p>
+    <label><input type="radio" name="q6" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q6" value="2"> Disagree</label>
+    <label><input type="radio" name="q6" value="3"> Neutral</label>
+    <label><input type="radio" name="q6" value="4"> Agree</label>
+    <label><input type="radio" name="q6" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 7 -->
+  <div>
+    <h2>7. Decision Clarity</h2>
+    <p>I feel confident that decisions I make are based on accurate, structured, and complete information.</p>
+    <label><input type="radio" name="q7" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q7" value="2"> Disagree</label>
+    <label><input type="radio" name="q7" value="3"> Neutral</label>
+    <label><input type="radio" name="q7" value="4"> Agree</label>
+    <label><input type="radio" name="q7" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 8 -->
+  <div>
+    <h2>8. Stakeholder Awareness</h2>
+    <p>I am aware of who the end users or stakeholders are for each process or system and understand their needs.</p>
+    <label><input type="radio" name="q8" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q8" value="2"> Disagree</label>
+    <label><input type="radio" name="q8" value="3"> Neutral</label>
+    <label><input type="radio" name="q8" value="4"> Agree</label>
+    <label><input type="radio" name="q8" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 9 -->
+  <div>
+    <h2>9. Practical Execution</h2>
+    <p>I can follow procedures effectively and know when and where to look for clarification if needed.</p>
+    <label><input type="radio" name="q9" value="1"> Strongly Disagree</label>
+    <label><input type="radio" name="q9" value="2"> Disagree</label>
+    <label><input type="radio" name="q9" value="3"> Neutral</label>
+    <label><input type="radio" name="q9" value="4"> Agree</label>
+    <label><input type="radio" name="q9" value="5"> Strongly Agree</label>
+  </div>
+
+  <!-- Question 10 -->
   <div>
     <h2>10. Personal Improvement</h2>
     <p>I actively seek ways to improve how I consume, share, and structure information in my work.</p>
