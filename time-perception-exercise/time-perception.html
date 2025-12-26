@@ -34,7 +34,7 @@
       justify-content: center;
     }
 
-    .card {
+    .tp-card {
       background: linear-gradient(180deg, var(--card), var(--bg-main));
       padding: 2.5rem;
       max-width: 520px;
@@ -56,7 +56,7 @@
       margin-bottom: 1.5rem;
     }
 
-    button {
+    .tp-.tp-button {
       background: linear-gradient(135deg, #1e40af, #1e3a8a);
       border: none;
       color: white;
@@ -68,12 +68,12 @@
       box-shadow: 0 8px 20px rgba(30,64,175,0.4);
     }
 
-    button:hover {
+    .tp-button:hover {
       transform: translateY(-1px);
       box-shadow: 0 12px 28px rgba(30,64,175,0.6);
     }
 
-    button.secondary {
+    .tp-button.secondary {
       background: transparent;
       border: 1px solid #334155;
       color: var(--text-main);
@@ -81,23 +81,23 @@
       margin-top: 1rem;
     }
 
-    .hidden {
+    .tp-hidden {
       display: none;
     }
 
-    .result {
+    .tp-result {
       margin-top: 1.5rem;
       background: rgba(2,6,23,0.6);
       padding: 1.5rem;
       border-radius: 12px;
     }
 
-    .metric {
+    .tp-metric {
       font-size: 1.4rem;
       margin-bottom: 0.5rem;
     }
 
-    .bias {
+    .tp-bias {
       margin-top: 1rem;
       font-style: italic;
       color: #c7d2fe;
@@ -131,14 +131,14 @@
         No timers. No hints.  
         Just your internal sense of time.
       </p>
-      <button onclick="startExperiment()">Start</button>
+      <.tp-button onclick="startExperiment()">Start</.tp-button>
     </div>
 
     <!-- RUNNING -->
     <div id="running" class="hidden">
       <h1>Time is running…</h1>
       <p>Stay focused. Stop when you feel 30 seconds have passed.</p>
-      <button onclick="stopExperiment()">Stop</button>
+      <.tp-button onclick="stopExperiment()">Stop</.tp-button>
     </div>
 
     <!-- RESULT -->
@@ -151,7 +151,7 @@
         <div class="bias" id="biasResult"></div>
       </div>
 
-      <button class="secondary" onclick="restart()">Try Again</button>
+      <.tp-button class="secondary" onclick="restart()">Try Again</.tp-button>
 
       <footer>
         This experiment explores subjective time perception.  
@@ -240,7 +240,7 @@
       localStorage.setItem("time-perception-data", JSON.stringify(data));
     }
   </script>
-<div id="congrats" class="congrats hidden">
+<div id=".tp-congrats" class="congrats hidden">
   🎯 Excellent time perception!
 </div>
 </body>
