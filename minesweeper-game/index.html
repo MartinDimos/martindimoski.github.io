@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Minesweeper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --tile: #1f2933;
+  --tile-revealed: #020617;
+  --accent: #38bdf8;
+  --danger: #ef4444;
+  --success: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #020617, #020617);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 460px;
+  width: 100%;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+select, button {
+  background: var(--tile);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent);
+  color: #020617;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.board {
+  display: grid;
+  gap: 4px;
+  justify-content: center;
+  background: var(--panel);
+  padding: 12px;
+  border-radius: 16px;
+}
+
+.cell {
+  width: 36px;
+  height: 36px;
+  background: var(--tile);
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.cell.revealed {
+  background: var(--tile-revealed);
+  cursor: default;
+}
+
+.cell.mine {
+  background: var(--danger);
+}
+
+.cell.flagged {
+  color: #facc15;
+}
+
+.footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.number-1 { color: #38bdf8; }
+.number-2 { color: #22c55e; }
+.number-3 { color: #f97316; }
+.number-4 { color: #a855f7; }
+.number-5 { color: #ef4444; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>💣 Minesweeper</h1>
+  <div class="subtitle">Left click = reveal • Right click = flag</div>
+
+  <div class="controls">
+    <select id="difficulty">
+      <option value="easy">Easy (8×8, 10 mines)</option>
+      <option value="medium">Medium (10×10, 20 mines)</option>
+      <option value="hard">Hard (12×12, 30 mines)</option>
+    </select>
+    <button id="restart">Restart</button>
+    <div class="status" id="status">🙂</div>
+  </div>
+
+  <div id="board" class="board"></div>
+
+  <div class="footer">
+    Static HTML game • Runs on GitHub Pages
+  </div>
+</div>
+
+<script>
+const boardEl = document.getElementById("board");
+const statusEl = document.getElementById("status");
+const difficultyEl = document.getElementById("difficulty");
+
+let rows, cols, mines;
+let board = [];
+let revealedCount = 0;
+let gameOver = false;
+
+const configs = {
+  easy: { rows: 8, cols: 8, mines: 10 },
+  medium: { rows: 10, cols: 10, mines: 20 },
+  hard: { rows: 12, cols: 12, mines: 30 }
+};
+
+function startGame() {
+  const config = configs[difficultyEl.value];
+  rows = config.rows;
+  cols = config.cols;
+  mines = config.mines;
+
+  board = [];
+  revealedCount = 0;
+  gameOver = false;
+  statusEl.textContent = "🙂";
+
+  boardEl.style.gridTemplateColumns = `repeat(${cols}, 36px)`;
+  boardEl.innerHTML = "";
+
+  for (let r = 0; r < rows; r++) {
+    board[r] = [];
+    for (let c = 0; c < cols; c++) {
+      const cell = {
+        mine: false,
+        revealed: false,
+        flagged: false,
+        count: 0,
+        el: document.createElement("div")
+      };
+
+      cell.el.className = "cell";
+      cell.el.addEventListener("click", () => reveal(r, c));
+      cell.el.addEventListener("contextmenu", e => {
+        e.preventDefault();
+        toggleFlag(r, c);
+      });
+
+      board[r][c] = cell;
+      boardEl.appendChild(cell.el);
+    }
+  }
+
+  placeMines();
+  calculateCounts();
+}
+
+function placeMines() {
+  let placed = 0;
+  while (placed < mines) {
+    const r = Math.floor(Math.random() * rows);
+    const c = Math.floor(Math.random() * cols);
+    if (!board[r][c].mine) {
+      board[r][c].mine = true;
+      placed++;
+    }
+  }
+}
+
+function calculateCounts() {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c].mine) continue;
+
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc].mine) {
+            count++;
+          }
+        }
+      }
+      board[r][c].count = count;
+    }
+  }
+}
+
+function reveal(r, c) {
+  if (gameOver) return;
+  const cell = board[r][c];
+  if (cell.revealed || cell.flagged) return;
+
+  cell.revealed = true;
+  cell.el.classList.add("revealed");
+  revealedCount++;
+
+  if (cell.mine) {
+    cell.el.textContent = "💣";
+    cell.el.classList.add("mine");
+    endGame(false);
+    return;
+  }
+
+  if (cell.count > 0) {
+    cell.el.textContent = cell.count;
+    cell.el.classList.add(`number-${cell.count}`);
+  } else {
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        const nr = r + dr;
+        const nc = c + dc;
+        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+          reveal(nr, nc);
+        }
+      }
+    }
+  }
+
+  if (revealedCount === rows * cols - mines) {
+    endGame(true);
+  }
+}
+
+function toggleFlag(r, c) {
+  if (gameOver) return;
+  const cell = board[r][c];
+  if (cell.revealed) return;
+
+  cell.flagged = !cell.flagged;
+  cell.el.textContent = cell.flagged ? "🚩" : "";
+  cell.el.classList.toggle("flagged");
+}
+
+function endGame(win) {
+  gameOver = true;
+  statusEl.textContent = win ? "😎" : "💀";
+
+  if (!win) {
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (board[r][c].mine) {
+          board[r][c].el.textContent = "💣";
+          board[r][c].el.classList.add("mine");
+        }
+      }
+    }
+  }
+}
+
+document.getElementById("restart").addEventListener("click", startGame);
+difficultyEl.addEventListener("change", startGame);
+
+startGame();
+</script>
+</body>
+</html>
