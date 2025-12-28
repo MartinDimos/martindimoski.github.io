@@ -106,27 +106,15 @@ function beep(freq, time) {
 }
 
 function resetGame() {
-  frog = {
-    x: 90,
-    y: canvas.height / 2,
-    r: 14,
-    v: 0,
-    tilt: 0
-  };
-
+  frog = { x: 90, y: canvas.height / 2, r: 14, v: 0, tilt: 0 };
   pipes = [];
-  clouds = [
-    { x: 0, y: 80, speed: 0.3 },
-    { x: 200, y: 140, speed: 0.5 }
-  ];
-
+  clouds = [ { x: 0, y: 80, speed: 0.3 }, { x: 200, y: 140, speed: 0.5 } ];
   score = 0;
   frame = 0;
   gravity = 0.45;
   pipeSpeed = 2.2;
   pipeGap = 150;
   gameState = "playing";
-
   scoreEl.textContent = score;
 }
 
@@ -139,43 +127,24 @@ function update() {
   if (gameState !== "playing") return;
 
   frame++;
-
   frog.v += gravity;
   frog.y += frog.v;
   frog.tilt = Math.min(Math.max(frog.v * 3, -25), 90);
 
   if (frame % 90 === 0) addPipe();
 
+  // Move pipes from right → left
   pipes.forEach(p => p.x -= pipeSpeed);
   pipes = pipes.filter(p => p.x > -60);
 
-  pipes.forEach(p => {
-    if (!p.passed && p.x + 52 < frog.x) {
-      p.passed = true;
-      score++;
-      scoreEl.textContent = score;
-      beep(900, 0.08);
-
-      if (score % 5 === 0) {
-        pipeSpeed += 0.2;
-        pipeGap -= 4;
-      }
-    }
-  });
-
-  clouds.forEach(c => {
-    c.x -= c.speed;
-    if (c.x < -100) c.x = canvas.width + 50;
-  });
+  clouds.forEach(c => { c.x -= c.speed; if (c.x < -100) c.x = canvas.width + 50; });
 
   if (frog.y > canvas.height || frog.y < 0) endGame();
 
   pipes.forEach(p => {
-    if (
-      frog.x + frog.r > p.x &&
-      frog.x - frog.r < p.x + 52 &&
-      (frog.y - frog.r < p.top || frog.y + frog.r > p.top + pipeGap)
-    ) {
+    if (frog.x + frog.r > p.x &&
+        frog.x - frog.r < p.x + 52 &&
+        (frog.y - frog.r < p.top || frog.y + frog.r > p.top + pipeGap)) {
       endGame();
     }
   });
@@ -221,25 +190,9 @@ function drawOverlay(text, sub) {
   ctx.fillText(sub, canvas.width / 2, canvas.height / 2 + 18);
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawClouds();
-  drawPipes();
-  drawFrog();
-
-  if (gameState === "start") {
-    drawOverlay("Flappy Frog", "Click or Space to start");
-  }
-
-  if (gameState === "over") {
-    drawOverlay("Game Over", "Click or Space to restart");
-  }
-}
-
 function endGame() {
   gameState = "over";
   beep(180, 0.4);
-
   if (score > best) {
     best = score;
     localStorage.setItem("flappyFrogBest", best);
@@ -249,11 +202,24 @@ function endGame() {
 
 function jump() {
   if (gameState === "start") resetGame();
-  if (gameState === "over") resetGame();
+  else if (gameState === "over") resetGame();
+
   if (gameState === "playing") {
     frog.v = jumpForce;
+    score++; // Increase score for each jump/click
+    scoreEl.textContent = score;
     beep(600, 0.05);
   }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawClouds();
+  drawPipes();
+  drawFrog();
+
+  if (gameState === "start") drawOverlay("Flappy Frog", "Click / Space to start");
+  if (gameState === "over") drawOverlay("Game Over", "Click / Space to restart");
 }
 
 function loop() {
@@ -262,14 +228,9 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-document.addEventListener("keydown", e => {
-  if (e.code === "Space") jump();
-});
+document.addEventListener("keydown", e => { if (e.code === "Space") jump(); });
 canvas.addEventListener("mousedown", jump);
-canvas.addEventListener("touchstart", e => {
-  e.preventDefault();
-  jump();
-});
+canvas.addEventListener("touchstart", e => { e.preventDefault(); jump(); });
 
 loop();
 </script>
