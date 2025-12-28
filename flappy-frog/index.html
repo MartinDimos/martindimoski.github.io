@@ -6,6 +6,283 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+body {
+  margin: 0;
+  background: #020617;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 420px;
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+}
+
+h1 {
+  margin: 8px 0;
+  font-size: 2rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+canvas {
+  background: linear-gradient(#38bdf8, #0ea5e9);
+  border-radius: 16px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>🐸 Flappy Frog</h1>
+  <div class="subtitle">Click / Tap / Space to jump</div>
+
+  <canvas id="game" width="360" height="520"></canvas>
+
+  <div class="hud">
+    <div>Score: <span id="score">0</span></div>
+    <div>Best: <span id="best">0</span></div>
+  </div>
+
+  <div class="footer">Static HTML game • GitHub Pages ready</div>
+</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const scoreEl = document.getElementById("score");
+const bestEl = document.getElementById("best");
+
+let frog, pipes, clouds;
+let score = 0;
+let best = localStorage.getItem("flappyFrogBest") || 0;
+let gameState = "start";
+let frame = 0;
+
+bestEl.textContent = best;
+
+// Physics
+let gravity = 0.45;
+let jumpForce = -8;
+let pipeSpeed = 2.2;
+let pipeGap = 150;
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beep(freq, time) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.frequency.value = freq;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
+  osc.stop(audioCtx.currentTime + time);
+}
+
+function resetGame() {
+  frog = {
+    x: 90,
+    y: canvas.height / 2,
+    r: 14,
+    v: 0,
+    tilt: 0
+  };
+
+  pipes = [];
+  clouds = [
+    { x: 0, y: 80, speed: 0.3 },
+    { x: 200, y: 140, speed: 0.5 }
+  ];
+
+  score = 0;
+  frame = 0;
+  gravity = 0.45;
+  pipeSpeed = 2.2;
+  pipeGap = 150;
+  gameState = "playing";
+
+  scoreEl.textContent = score;
+}
+
+function addPipe() {
+  const top = Math.random() * (canvas.height - pipeGap - 140) + 60;
+  pipes.push({ x: canvas.width, top, passed: false });
+}
+
+function update() {
+  if (gameState !== "playing") return;
+
+  frame++;
+
+  frog.v += gravity;
+  frog.y += frog.v;
+  frog.tilt = Math.min(Math.max(frog.v * 3, -25), 90);
+
+  if (frame % 90 === 0) addPipe();
+
+  pipes.forEach(p => p.x -= pipeSpeed);
+  pipes = pipes.filter(p => p.x > -60);
+
+  pipes.forEach(p => {
+    if (!p.passed && p.x + 52 < frog.x) {
+      p.passed = true;
+      score++;
+      scoreEl.textContent = score;
+      beep(900, 0.08);
+
+      if (score % 5 === 0) {
+        pipeSpeed += 0.2;
+        pipeGap -= 4;
+      }
+    }
+  });
+
+  clouds.forEach(c => {
+    c.x -= c.speed;
+    if (c.x < -100) c.x = canvas.width + 50;
+  });
+
+  if (frog.y > canvas.height || frog.y < 0) endGame();
+
+  pipes.forEach(p => {
+    if (
+      frog.x + frog.r > p.x &&
+      frog.x - frog.r < p.x + 52 &&
+      (frog.y - frog.r < p.top || frog.y + frog.r > p.top + pipeGap)
+    ) {
+      endGame();
+    }
+  });
+}
+
+function drawClouds() {
+  ctx.fillStyle = "rgba(255,255,255,0.6)";
+  clouds.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 22, 0, Math.PI * 2);
+    ctx.arc(c.x + 24, c.y + 6, 18, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+function drawPipes() {
+  ctx.fillStyle = "#15803d";
+  pipes.forEach(p => {
+    ctx.fillRect(p.x, 0, 52, p.top);
+    ctx.fillRect(p.x, p.top + pipeGap, 52, canvas.height);
+  });
+}
+
+function drawFrog() {
+  ctx.save();
+  ctx.translate(frog.x, frog.y);
+  ctx.rotate(frog.tilt * Math.PI / 180);
+  ctx.fillStyle = "#22c55e";
+  ctx.beginPath();
+  ctx.arc(0, 0, frog.r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawOverlay(text, sub) {
+  ctx.fillStyle = "rgba(2,6,23,0.7)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#fff";
+  ctx.font = "26px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 10);
+  ctx.font = "14px system-ui";
+  ctx.fillText(sub, canvas.width / 2, canvas.height / 2 + 18);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawClouds();
+  drawPipes();
+  drawFrog();
+
+  if (gameState === "start") {
+    drawOverlay("Flappy Frog", "Click or Space to start");
+  }
+
+  if (gameState === "over") {
+    drawOverlay("Game Over", "Click or Space to restart");
+  }
+}
+
+function endGame() {
+  gameState = "over";
+  beep(180, 0.4);
+
+  if (score > best) {
+    best = score;
+    localStorage.setItem("flappyFrogBest", best);
+    bestEl.textContent = best;
+  }
+}
+
+function jump() {
+  if (gameState === "start") resetGame();
+  if (gameState === "over") resetGame();
+  if (gameState === "playing") {
+    frog.v = jumpForce;
+    beep(600, 0.05);
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") jump();
+});
+canvas.addEventListener("mousedown", jump);
+canvas.addEventListener("touchstart", e => {
+  e.preventDefault();
+  jump();
+});
+
+loop();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flappy Frog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
 :root {
   --bg: #020617;
   --panel: #020617;
