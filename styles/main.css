@@ -1,3 +1,8 @@
+/* ==========================================================================
+   Portfolio Website - Main Styles
+   Author: Martin Dimoski
+   ========================================================================== */
+
 /* ===============================
    GLOBAL VARIABLES
 ================================ */
@@ -10,6 +15,20 @@
   --accent: #1e3a8a;
   --accent-soft: #1e40af;
   --border: rgba(255,255,255,0.08);
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --transition: all 0.2s ease;
 }
 
 /* ===============================
@@ -17,9 +36,13 @@
 ================================ */
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -32,10 +55,16 @@ body {
 a {
   color: #93c5fd;
   text-decoration: none;
+  transition: var(--transition);
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 2px;
 }
 
 /* ===============================
@@ -43,18 +72,18 @@ a:hover {
 ================================ */
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
-  padding: 3rem 1.5rem 5rem;
+  padding: 0 var(--spacing-md);
 }
 
 section {
-  margin-bottom: 4rem;
+  margin-bottom: var(--spacing-3xl);
 }
 
 section h2 {
   font-size: 1.6rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-lg);
   border-left: 4px solid var(--accent-soft);
   padding-left: 0.75rem;
 }
@@ -64,7 +93,7 @@ section h2 {
 ================================ */
 
 .hero {
-  margin-bottom: 4rem;
+  padding: var(--spacing-3xl) 0;
 }
 
 .badge {
@@ -111,7 +140,7 @@ h1 {
 }
 
 /* ===============================
-   EXPERIENCE / CARDS
+   EXPERIENCE / GENERIC CARDS
 ================================ */
 
 .timeline {
@@ -126,6 +155,7 @@ h1 {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.6rem;
+  transition: var(--transition);
 }
 
 .role h3,
@@ -152,17 +182,17 @@ li {
 }
 
 /* ===============================
-   CERTIFICATIONS (FIXED)
+   CERTIFICATIONS (ISOLATED & SAFE)
 ================================ */
 
 .cert-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
+  justify-items: center;
   margin-top: 2rem;
 }
 
-/* Card base */
 .cert-card {
   width: 190px;
   height: 254px;
@@ -178,18 +208,18 @@ li {
   text-align: center;
 }
 
-/* Text layer */
+/* CONTENT LAYER */
 .cert-card h2,
 .cert-card p,
 .cert-card span,
 .cert-card a {
   position: relative;
-  z-index: 3;
+  z-index: 2;
 }
 
 .cert-card h2 {
-  font-size: 1.1rem;
   color: white;
+  font-size: 1.05rem;
 }
 
 .cert-card p {
@@ -203,11 +233,10 @@ li {
 }
 
 .cert-card a {
-  margin-top: 0.5rem;
   font-size: 0.75rem;
   color: #c7d2fe;
   border: 1px solid rgba(255,255,255,0.15);
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 8px;
 }
 
@@ -215,39 +244,33 @@ li {
   background: rgba(255,255,255,0.08);
 }
 
-/* Rotating border */
+/* ROTATING BORDER */
 .cert-card::before {
-  content: "";
+  content: '';
   position: absolute;
-  width: 120px;
+  width: 100px;
   height: 140%;
   background-image: linear-gradient(
     180deg,
     rgb(0, 183, 255),
     rgb(255, 48, 255)
   );
-  animation: rotBGimg 3s linear infinite;
-  z-index: 1;
+  animation: rotBGimg 4s linear infinite;
+  z-index: 0;
 }
 
-/* Inner surface */
 .cert-card::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 5px;
   background: #07182E;
   border-radius: 15px;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* Animation */
 @keyframes rotBGimg {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* ===============================
@@ -255,10 +278,19 @@ li {
 ================================ */
 
 footer {
-  margin-top: 4rem;
-  padding-top: 2rem;
+  margin-top: var(--spacing-3xl);
+  padding-top: var(--spacing-lg);
   border-top: 1px solid var(--border);
   color: var(--muted);
   text-align: center;
   font-size: 0.9rem;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  section { margin-bottom: var(--spacing-2xl); }
 }
