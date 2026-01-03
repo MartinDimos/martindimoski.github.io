@@ -1,180 +1,276 @@
 <!DOCTYPE html>
-<html lang="mk">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Martin Dimoski – Portfolio & CV</title>
 
-  <title>Мартин Димоски – Практични бизнис и технички решенија</title>
+  <meta name="description" content="Martin Dimoski – Senior R&D Executive specializing in systems, automation, GTM infrastructure, and data-driven execution." />
+  <meta name="author" content="Martin Dimoski" />
 
-  <meta name="description" content="Практични консултации, автоматизација и техничка помош. Фокус на јасни решенија, подобри процеси и помалку хаос.">
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111a2e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #1e3a8a;
+      --accent-soft: #1e40af;
+      --border: rgba(255,255,255,0.08);
+    }
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDQ6HV2G9B"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZDQ6HV2G9B');
-  </script>
+    * { box-sizing: border-box; }
 
-  <link rel="stylesheet" href="../styles/main.css">
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #050816, #0b1220);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: #93c5fd; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* HERO */
+    .hero { margin-bottom: 4rem; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(30,64,175,0.15);
+      color: #93c5fd;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 4vw, 3rem);
+      margin: 0.8rem 0;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 800px;
+      font-size: 1.05rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.65rem 1.1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      border: none;
+    }
+
+    section { margin-bottom: 4rem; }
+
+    section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--accent-soft);
+      padding-left: 0.75rem;
+    }
+
+    /* EXPERIENCE */
+    .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .role,
+    .card {
+      background: linear-gradient(180deg, #0d152a, var(--card));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem;
+    }
+
+    .company { color: #93c5fd; }
+    .period { font-size: 0.85rem; color: var(--muted); margin: 0.4rem 0 1rem; }
+
+    ul { padding-left: 1.2rem; }
+    li { margin-bottom: 0.45rem; }
+
+    /* ===============================
+       CERTIFICATIONS — FIXED
+    ================================ */
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .cert-card {
+      width: 190px;
+      height: 254px;
+      background: #07182E;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      overflow: hidden;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    /* text layer */
+    .cert-card h2,
+    .cert-card p,
+    .cert-card span,
+    .cert-card a {
+      position: relative;
+      z-index: 3;
+    }
+
+    .cert-card h2 {
+      color: white;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .cert-card p {
+      font-size: 0.85rem;
+      color: #93c5fd;
+      margin: 0;
+    }
+
+    .cert-card span {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .cert-card a {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #c7d2fe;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+    }
+
+    .cert-card a:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* rotating border */
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 140%;
+      background-image: linear-gradient(
+        180deg,
+        rgb(0, 183, 255),
+        rgb(255, 48, 255)
+      );
+      animation: rotBGimg 3s linear infinite;
+      z-index: 1;
+    }
+
+    .cert-card::after {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      background: #07182E;
+      border-radius: 15px;
+      z-index: 2;
+    }
+
+    @keyframes rotBGimg {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 
 <body>
+<div class="container">
 
-<!-- NAV -->
-<nav class="navbar">
-  <div class="nav-container container">
-    <a href="#" class="logo">MD</a>
-    <ul class="nav-links">
-      <li><a href="#пристап">Пристап</a></li>
-      <li><a href="#услуги">Што решавам</a></li>
-      <li><a href="#за-кого">За кого е</a></li>
-      <li><a href="#контакт">Контакт</a></li>
-    </ul>
-    <a href="../en/index.html">EN</a>
-  </div>
-</nav>
-
-<main>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <span class="badge">ПРАКТИЧНИ РЕШЕНИЈА</span>
-
-    <h1>
-      Ова е тест страна –
-      <span style="color:#93c5fd">не е достапна соработка.</span>
-    </h1>
-
+  <header class="hero">
+    <span class="badge">Senior R&D Executive · Systems · GTM · Automation</span>
+    <h1>Martin Dimoski</h1>
     <p class="subtitle">
-      Консултации со поединци и бизниси кога работите стануваат
-      покомплицирани отколку што треба да бидат.
+      Senior R&D Executive with deep experience in multichannel GTM systems, automation,
+      data infrastructure, and AI-assisted workflows.
     </p>
 
     <div class="hero-actions">
-      <a href="#контакт" class="btn primary">Ајде да разговараме →</a>
+      <a class="btn primary" href="https://www.linkedin.com/in/dimoski-martin" target="_blank">LinkedIn</a>
+      <a class="btn" href="mailto:martin@martindimoski.dev">martin@martindimoski.dev</a>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- APPROACH -->
-<section id="пристап">
-  <div class="container">
-    <h2>Како пристапувам</h2>
+  <!-- CERTIFICATIONS -->
+  <section>
+    <h2>Licenses & Certifications</h2>
 
-    <p>
-      Доаѓам од автоматизација, вештачка интелигенција,
-      маркетинг, продажба и работа со различни
-      информациски системи.
-    </p>
-
-    <p>
-      Но фокусот никогаш не е самата технологија,
-      туку начинот на кој работите реално се одвиваат
-      и каде се губи време, пари или фокус.
-    </p>
-
-    <p>
-      Понекогаш тоа значи мали подобрувања.
-      Понекогаш значи целосно редизајнирање
-      на начинот на работа.
-    </p>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section id="услуги">
-  <div class="container">
-    <h2>Какви проблеми решавам</h2>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Кога работата е покомплицирана</h3>
-        <p>Поедноставување на процеси, алатки и одлуки.</p>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <h2>Generative AI</h2>
+        <p>Microsoft & LinkedIn</p>
+        <span>Nov 2024</span>
+        <a href="#" target="_blank">View</a>
       </div>
 
-      <div class="card">
-        <h3>Кога се губи време</h3>
-        <p>Автоматизација и паметни решенија.</p>
+      <div class="cert-card">
+        <h2>AI Ethics</h2>
+        <p>LinkedIn</p>
+        <span>Nov 2024</span>
+        <a href="#">View</a>
       </div>
 
-      <div class="card">
-        <h3>Кога техниката станува проблем</h3>
-        <p>Практична техничка помош и системи.</p>
+      <div class="cert-card">
+        <h2>Marketing Insider</h2>
+        <p>LinkedIn</p>
+        <span>Aug 2024</span>
+        <a href="#">View</a>
       </div>
 
-      <div class="card">
-        <h3>Кога податоците се „заробени“</h3>
-        <p>Вадење податоци од нефункционални уреди.</p>
-      </div>
-
-      <div class="card">
-        <h3>Кога не сте сигурни што да купите</h3>
-        <p>Објективен совет за опрема.</p>
-      </div>
-
-      <div class="card">
-        <h3>Кога сакате второ мислење</h3>
-        <p>Јасност пред важна одлука.</p>
+      <div class="cert-card">
+        <h2>Data Analytics</h2>
+        <p>Microsoft</p>
+        <span>Aug 2023</span>
+        <a href="#">View</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- AUDIENCE -->
-<section id="за-кого">
-  <div class="container">
-    <h2>За кого е ова</h2>
+  <footer>
+    © 2025 Martin Dimoski · Live CV · Share the link, not a PDF
+  </footer>
 
-    <div class="timeline">
-      <div class="card">
-        <h3>Луѓе што сакаат јасност</h3>
-        <p>Директни одговори без комплицирање.</p>
-      </div>
-
-      <div class="card">
-        <h3>Бизниси во раст</h3>
-        <p>Кога системите веќе не следат.</p>
-      </div>
-
-      <div class="card">
-        <h3>Ова не е за вас ако…</h3>
-        <p>Барате брзи закрпи наместо решение.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="контакт">
-  <div class="container">
-    <h2>Ајде да разговараме</h2>
-
-    <p class="subtitle">Ова е тест страна и не е активна.</p>
-
-    <div class="hero-actions">
-      <a href="mailto:martin@martindimoski.dev" class="btn primary">
-        Контактирајте ме
-      </a>
-    </div>
-
-    <p class="period">Одговор во рок од 24–48 часа</p>
-  </div>
-</section>
-
-</main>
-
-<footer>
-  <div class="container">
-    <p>
-      © 2025 Мартин Димоски ·
-      <a href="/mk/privacy-policy.html">Privacy Policy</a>
-    </p>
-  </div>
-</footer>
-
-<script src="../js/main.js"></script>
+</div>
 </body>
 </html>
