@@ -110,10 +110,7 @@
     ul { padding-left: 1.2rem; }
     li { margin-bottom: 0.45rem; }
 
-    /* ===============================
-       CERTIFICATIONS — FIXED
-    ================================ */
-
+    /* CERTIFICATIONS */
     .cert-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -136,32 +133,14 @@
       text-align: center;
     }
 
-    /* text layer */
     .cert-card h2,
     .cert-card p,
     .cert-card span,
-    .cert-card a {
-      position: relative;
-      z-index: 3;
-    }
+    .cert-card a { position: relative; z-index: 3; }
 
-    .cert-card h2 {
-      color: white;
-      font-size: 1.1rem;
-      margin: 0;
-    }
-
-    .cert-card p {
-      font-size: 0.85rem;
-      color: #93c5fd;
-      margin: 0;
-    }
-
-    .cert-card span {
-      font-size: 0.75rem;
-      color: #9ca3af;
-    }
-
+    .cert-card h2 { color: white; font-size: 1.1rem; margin: 0; }
+    .cert-card p { font-size: 0.85rem; color: #93c5fd; margin: 0; }
+    .cert-card span { font-size: 0.75rem; color: #9ca3af; }
     .cert-card a {
       margin-top: 0.5rem;
       font-size: 0.75rem;
@@ -170,22 +149,14 @@
       padding: 0.25rem 0.6rem;
       border-radius: 8px;
     }
+    .cert-card a:hover { background: rgba(255,255,255,0.08); }
 
-    .cert-card a:hover {
-      background: rgba(255,255,255,0.08);
-    }
-
-    /* rotating border */
     .cert-card::before {
       content: '';
       position: absolute;
       width: 120px;
       height: 140%;
-      background-image: linear-gradient(
-        180deg,
-        rgb(0, 183, 255),
-        rgb(255, 48, 255)
-      );
+      background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
       animation: rotBGimg 3s linear infinite;
       z-index: 1;
     }
@@ -218,6 +189,7 @@
 <body>
 <div class="container">
 
+  <!-- HERO -->
   <header class="hero">
     <span class="badge">Senior R&D Executive · Systems · GTM · Automation</span>
     <h1>Martin Dimoski</h1>
@@ -231,6 +203,96 @@
       <a class="btn" href="mailto:martin@martindimoski.dev">martin@martindimoski.dev</a>
     </div>
   </header>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <h2>Professional Experience</h2>
+    <div class="timeline">
+
+      <div class="role">
+        <h3>Senior R&D Executive <span class="company">· Sopro</span></h3>
+        <div class="period">January 2025 – Present</div>
+        <ul>
+          <li>Leading R&D initiatives across automation, AI-assisted workflows, and internal tooling.</li>
+          <li>Designing scalable GTM and prospecting systems used across teams and clients.</li>
+          <li>Translating complex requirements into structured, repeatable execution.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>R&D Executive <span class="company">· Sopro</span></h3>
+        <div class="period">June 2023 – December 2024</div>
+        <ul>
+          <li>Built end-to-end BDR and outbound infrastructure independently.</li>
+          <li>Optimized deliverability, warm-up, enrichment, and automation pipelines.</li>
+          <li>Developed internal frameworks and documentation used company-wide.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>Marketing Executive <span class="company">· Sopro</span></h3>
+        <div class="period">August 2021 – June 2023 · Skopje, North Macedonia</div>
+        <ul>
+          <li>Led end-to-end delivery and optimization of multichannel B2B outbound campaigns.</li>
+          <li>Designed audience targeting frameworks and defined TAMs using advanced research and enrichment tools.</li>
+          <li>Owned technical setup and optimization across email, LinkedIn, gifting, ads, webchat, CRM, and intent tools.</li>
+          <li>Managed campaign data pipelines, proactively identifying data risks and delivery issues.</li>
+          <li>Developed email infrastructure strategies including domains, warm-up, and sender reputation.</li>
+          <li>Acted as technical escalation point for Customer Success and internal teams.</li>
+          <li>Served as internal source of truth for campaign best practices and performance benchmarks.</li>
+          <li>Advised on campaign strategy during client-facing calls using data-backed insights.</li>
+          <li>Contributed to internal product and workflow improvements to increase performance and reduce costs.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>Market Developer <span class="company">· Tikveš Winery</span></h3>
+        <div class="period">October 2019 – August 2021 · Skopje, North Macedonia</div>
+        <ul>
+          <li>Managed B2B sales territories across retail and HoReCa sectors.</li>
+          <li>Segmented accounts based on performance data and growth potential.</li>
+          <li>Executed structured field sales flows and merchandising standards.</li>
+          <li>Coordinated with logistics and marketing teams on delivery and activations.</li>
+          <li>Prepared sales, financial, and market share reports for planning and forecasting.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>Import / Export Assistant (Internship) <span class="company">· Fersped AD</span></h3>
+        <div class="period">February 2019 – March 2019</div>
+        <ul>
+          <li>Assisted with customs documentation and trade compliance processes.</li>
+          <li>Supported logistics coordination, shipment tracking, and warehouse operations.</li>
+          <li>Gained hands-on exposure to international trade and supply chain workflows.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>Seasonal Operational Roles <span class="company">· USA</span></h3>
+        <div class="period">June 2018 – September 2018 · Santa Cruz, California</div>
+        <ul>
+          <li>Attraction Attendant – Santa Cruz Seaside Company (guest experience, safety, operations).</li>
+          <li>Lead Cook / Deputy Shift Manager – Beach St. Pizza (staff coordination, inventory, operations).</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <h2>Education</h2>
+    <div class="card">
+      <h3>Bachelor of Business and Logistics</h3>
+      <p class="company">University of Business and Logistics</p>
+      <p class="period">August 2015 – January 2021</p>
+      <p>
+        Focus areas included business logistics, logistics information systems,
+        risk management, statistical methods, marketing, decision-making processes,
+        and quality systems.
+      </p>
+    </div>
+  </section>
 
   <!-- CERTIFICATIONS -->
   <section>
